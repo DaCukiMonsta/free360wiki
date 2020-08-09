@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Overview - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#overview" class="nav-link">Overview</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#smbus-controller-port-layout" class="nav-link">SMBus Controller Port Layout</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#smbus-controller-programming" class="nav-link">SMBus Controller Programming</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#xbox-smbus-devices" class="nav-link">Xbox SMBus Devices</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="overview">Overview</h1>
+<p>All non-PC components of the Xbox console are connected through an
+I²C/SMbus interface. I²C/SMBus is a slow low-cost serial bus with each
+device having a unique 7-bit ID. (Wikipedia has informative articles
+about I²C (http://en.wikipedia.org/wiki/I2c) and SMBus
+(http://en.wikipedia.org/wiki/SMBus), you might want to check them out.)</p>
+<p>There are only two operations of an SMBus controller: write and read.
+Writing means that an 8 bit command code and an 8 or 16 bit operand are
+sent to an SMBus device. Reading means that an 8 bit command code is
+sent to the device and an 8 or 16 bit answer is expected.</p>
+<p>The controller for the SMBus interface in the Xbox is a PCI device with
+the DevID 01B4 and it is built into MPCX southbridge.</p>
+<h1 id="smbus-controller-port-layout">SMBus Controller Port Layout</h1>
+<table>
+<thead>
+<tr class="header">
+<th><p>Port</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>0xc000</p></td>
+<td><p>Status bit 0: abort<br />
+bit 1: collision<br />
+bit 2: protocol error<br />
+bit 3: busy<br />
+bit 4: cycle complete<br />
+bit 5: timeout</p></td>
+</tr>
+<tr class="even">
+<td><p>0xc002</p></td>
+<td><p>Control bit 2-0: cycle type<br />
+bit 3: start<br />
+bit 4: enable interrupt<br />
+bit 5: abort</p></td>
+</tr>
+<tr class="odd">
+<td><p>0xc004</p></td>
+<td><p>Address</p></td>
+</tr>
+<tr class="even">
+<td><p>0xc006</p></td>
+<td><p>Data</p></td>
+</tr>
+<tr class="odd">
+<td><p>0xc008</p></td>
+<td><p>Command</p></td>
+</tr>
+</tbody>
+</table>
+
+<p>This is very similar (but not identical) to the AMD756/AMD766/AMD768
+SMBus controllers. The <a href="https://web.archive.org/web/20150627102528/http://www.lm-sensors.org/">lm_sensors project</a>
+includes GPLed Linux kernel code for it since version 2.6.4
+(kernel/busses/i2c-amd756.c).</p>
+<h1 id="smbus-controller-programming">SMBus Controller Programming</h1>
+<p>The following two routines illustrate how to read and write data from
+and to an SMBus
+device:</p>
+<p><code>int SMBusWriteCommand(unsigned char slave, unsigned char command, int isWord, unsigned short data) {</code>
+<code>again:</code>
+<code>_outp(0xc004, (slave&lt;&lt;1)&amp;0xfe);</code>
+<code>_outp(0xc008, command);</code>
+<code>_outpw(0xc006, data);</code>
+<code>_outpw(0xc000, _inpw(0xc000));</code>
+<code>_outp(0xc002, (isWord) ? 0x0b : 0x0a);</code>
+<code>while ((_inp(0xc000) &amp; 8)); /* wait while busy */</code>
+<code>if (_inp(0xc000) &amp; 0x02) goto again; /* retry transmission */</code>
+<code>if (_inp(0xc000) &amp; 0x34) return 0;  /* fatal error */</code>
+<code>return 1;</code>
+<code>}</code>
+<code>int SMBusReadCommand(unsigned char slave, unsigned char command, int isWord, unsigned short *data) {</code>
+<code>again:</code>
+<code>_outp(0xc004, (slave&lt;&lt;1)|0x01);</code>
+<code>_outp(0xc008, command);</code>
+<code>_outpw(0xc000, _inpw(0xc000));</code>
+<code>_outp(0xc002, (isWord) ? 0x0b : 0x0a);</code>
+<code>while ((_inp(0xc000) &amp; 8)); /* wait while busy */</code>
+<code>if (_inp(0xc000) &amp; 0x02) goto again; /* retry transmission */</code>
+<code>if (_inp(0xc000) &amp; 0x34) return 0;  /* fatal error */</code>
+<code>*data = _inpw(0xc006);</code>
+<code>return 1;</code>
+<code>}</code></p>
+<p>To avoid busy waiting of the CPU, the SMBus controller can also issue an
+interrupt when the operation is complete, by setting bit #4 in the
+control port when initiating the transfer.</p>
+<h1 id="xbox-smbus-devices">Xbox SMBus Devices</h1>
+<p>The following four devices are connected to the Xbox SMBus:</p>
+<p>Device Hardware Address Software Address PIC16LC 0x10 0x20 Conexant
+CX25871 Video Encoder 0x45 0x8a ADM1032 System Temperature Monitor 0x4c
+0x98 Serial EEPROM 0x54 0xa8 Do not confuse the hardware with the
+software addresses: The software ID is the hardware ID shifted by one
+bit left. The code above expects the hardware ID.</p>
+<p>Actually, these addresses are not literally accurate; you find that the
+hardware address is 0x54 for the EEPROM: the actual address of the
+EEPROM on the i2c bus is 1010 (0xa), however, you will also notice that
+0x54 is 1010100 in binary, and it seems that this 100 is also appended
+onto the other devices as well (although their software address is
+naturally read as say 10101000 - obviously because of the left shifting,
+however, it could be speculated that it would be possible to communicate
+with devices over the SMBus that are connected via i2c, so long as you
+knew their base address.</p>
+<p>Retrieved from "<a href="http://www.xbox-linux.org/wiki/SMBus_Controller">http://www.xbox-linux.org/wiki/SMBus_Controller</a>"</p>
+<p><a href="Category:Xbox_Hardware" title="wikilink">Category:Xbox_Hardware</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

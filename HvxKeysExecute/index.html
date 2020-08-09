@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>HvxKeysExecute - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#hvxkeysexecute" class="nav-link">HvxKeysExecute</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="hvxkeysexecute">HvxKeysExecute</h1>
+<p>HvxKeysExecute is a syscall to execute a payload in privileged mode</p>
+<ul>
+<li>Microsoft uses it as a back door to xbox 360s</li>
+<li>On retails: Payloads must be signed</li>
+<li>On exploited consoles: Signature check must be patched</li>
+</ul>
+<p>Because this function has to do with online related services, I have
+altered some function names, with the intention to reduce abusing this
+for online purposes.</p>
+<p>Why is this here if it has to do with online? Because while it is used
+in the xbox live auth process, that does not appear to be its main
+function. For example I have used it many times to help debug other HV
+system calls.</p>
+<pre><code class="cpp">#define KEYS_PARAMETER_FAIL 0xC8000030
+#define KEYS_MAGIC_FAIL 0xC8000032
+#define KEYS_HVMAGIC_FAIL 0xC8000033
+#define KEYS_HEADER_FAIL 0xC8000034
+#define KEYS_ENTRYPOINT_FAIL 0xC8000035
+#define KEYS_CRYPT_FAIL 0xC8000036
+
+// similar header to a bootloader, without the presets (probably because presets are passed as arguments)
+typedef struct _BLHeader
+{
+    WORD Magic;     // 0 : 2
+    WORD Version;       // 2 : 2
+    DWORD Flags;        // 4 : 4
+    DWORD EntryPoint;   // 8 : 4
+    DWORD Size;     // 0xC : 4
+    BYTE key[0x10];     // 0x10 : 0x10
+    XECRYPT_SIG Sig;    // 0x20 : 0x100
+    // Header: 0x120
+}BLHeader, *PBLHeader;
+
+BYTE BLKey[0x10] = { &lt;redacted&gt; };
+BYTE ExSalt[0xA] = &lt;redacted&gt;; // NOTE: They use the same RSA key and BLKey as 1bl but different signature salt
+XECRYPT_RSAPUB_2048 xRSA;
+xRSA = &lt;redacted&gt;
+
+typedef QWORD PayloadJump(PBYTE pbPayload, QWORD Arg1, QWORD Arg2, QWORD Arg3, QWORD Arg4);
+
+QWORD HvxKeysExecute(PBYTE pbPayload, DWORD cbPayload, QWORD Arg1, QWORD Arg2, QWORD Arg3, QWORD Arg4)
+{
+    if(pbPayload &amp; 0x7F // 0x80 byte alignment check
+        || cbPayload &amp; 0x7F // 0x80 byte alignment check
+        || cbPayload &gt; 0x10000 // size check
+        || (((pbPayload + cbPayload) - 1) ^ pbPayload) &amp; 0xFFFF0000)
+        return KEYS_PARAMETER_FAIL;
+
+    HvpAquireSpinLock(0x200016460);
+
+    // our payload will be executed in realmode, to maintain security make sure it will be in a secure area
+    DWORD origPayload = pbPayload;
+    pbPayload = HvpRelocatePhysicalToInternal(pbPayload, cbPayload, 0x3E);
+
+    // from now on if something fails, we need to invalidate the block in protected memory
+    QWORD ret = 0;
+
+    PBLHeader phPayload = (PBLHeader)pbPayload;
+    if(phPayload-&gt;Magic &amp; 0xF0F == 0xD0D) // Payload Magic check
+    {
+        if((*(WORD*)0 ^ phPayload-&gt;Magic) &amp; 0xF000 == 0) // HV &amp; Payload magic check
+        {
+            if(phPayload-&gt;Size &gt;= 0x120 // sanity check
+                || (phPayload-&gt;Size + 0xF) &amp; 0xFFFFFFF0 &gt;= phPayload-&gt;Size // ? dont see the point...?
+                || (phPayload-&gt;Size + 0xF) &amp; 0xFFFFFFF0 &lt;= cbPayload) // sanity check
+            {
+                if(!phPayload-&gt;EntryPoint &amp; 3 // 4 byte alignment check
+                    || phPayload-&gt;EntryPoint &gt;= 0x120 // sanity check
+                    || phPayload-&gt;EntryPoint &lt;= phPayload-&gt;Size &amp; 0xFFFFFFFC) // sanity check
+                {
+                    BYTE rc4Key[0x10];
+                    XeCryptHmacSha(BLKey, 0x10, &amp;phPayload-&gt;key, 0x10, 0, 0, 0, 0, rc4Key, 0x10);
+                    XECRYPT_RC4_STATE rc4;
+                    XeCryptRc4Key(&amp;rc4, rc4Key, 0x10);
+                    XeCryptRc4Ecb(&amp;rc4, pbPayload+0x20, phPayload-&gt;Size - 0x20);
+                    BYTE Hash[0x14];
+                    XeCryptRotSumSha(pbPayload, 0x10, pbPayload+0x120, phPayload-&gt;Size - 0x120, Hash, 0x14);
+                    if(XeCryptBnQwBeSigVerify(phPayload-&gt;Sig, Hash, ExSalt, &amp;xRSA))
+                    {
+                        // key and sig will not be used anymore, null them
+                        *(QWORD*)pbPayload+0x10 = 0ull;
+                        *(QWORD*)pbPayload+0x18 = 0ull;
+                        memset(&amp;phPayload-&gt;Sig, 0, 0x100);
+                        if(phPayload-&gt;Size &lt; cbPayload)
+                            memset((pbPayload + phPayload-&gt;Size), 0, (cbPayload - phPayload-&gt;Size));
+
+                        // jump to our payload
+                        PayloadJump* pfPayload = (PayloadJump*)(pbPayload + phPayload-&gt;EntryPoint);
+                        ret = pfPayload(pbPayload, Arg1, Arg2, Arg3, Arg4);
+                    }
+                    else ret = KEYS_CRYPT_FAIL;
+                }
+                else ret = KEYS_ENTRYPOINT_FAIL;
+            }
+            else ret = KEYS_HEADER_FAIL;
+        }
+        else ret = KEYS_HVMAGIC_FAIL;
+    }
+    else ret = KEYS_MAGIC_FAIL;
+
+    BYTE retBuf[0x100];
+    if(ret == 0) // assumed as success (payload return can change this)
+        memcpy(retBuf, pbPayload+0x20, 0x100);
+    else // assumed something failed, null retBuf (NOTE: if you want to use retBuf as a return buffer, payload must return 0)
+        for(int i = 0;i &lt; 0x20;i++)
+            retBuf[i*8] = 0ull;
+
+    // clean up
+    HvpInvalidateCachelines(pbPayload, cbPayload);
+    pbPayload = HvpPhysicalToReal(origPayload, cbPayload);
+    HvpZeroCacheLines(pbPayload, cbPayload &gt;&gt; 7);
+    memcpy(pbPayload + 0x20, retBuf, 0x100);
+
+    HvpReleaseSpinLock(0x200016460);
+
+    return ret;
+}
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

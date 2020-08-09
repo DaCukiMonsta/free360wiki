@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>DVD drive - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#dvd-drive" class="nav-link">DVD drive</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#models" class="nav-link">Models</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#general-information" class="nav-link">General Information</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#confirmed-facts" class="nav-link">Confirmed Facts</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#speculation" class="nav-link">Speculation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#on-disc-format" class="nav-link">On-Disc format</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="dvd-drive">DVD drive</h1>
+<p>The <strong>DVD Drive</strong> is used by the Xbox 360 for playing games, movies,
+running executables, listening to music. The firmware of most <strong>DVD
+Drive</strong>s can be modified to play backups, or aid in the running of
+unsigned code.</p>
+<h2 id="models">Models</h2>
+<p>There are at least four different types of DVD drives used in the 360:</p>
+<ul>
+<li>Hitachi-LG GDR-3120L (Multiple ROM revisions)</li>
+<li>Toshiba/Samsung TS-H943 (MS25 / MS28)</li>
+<li>BenQ VAD6038</li>
+<li>Lite-On DG16D2S</li>
+</ul>
+<p>The model you get depends on where your Xbox was manufactured, when it
+was manufactured, what batch it was in and a lot of other factors.</p>
+<h2 id="general-information">General Information</h2>
+<p><img alt="&lt;File:Dvd&gt;" src="../images/custom power connector.jpg" /></p>
+<p>Close-up of the custom power connector.</p>
+<ul>
+<li>The Xbox 360 was launched with a standard dual layer DVD-ROM drive
+  manufactured by Hitachi-LG.</li>
+<li>The Xbox boots without any error when the DVD-ROM drive's SATA
+  connector and power cable are not connected. However, the power
+  light flashes rapidly, just like when the tray is ejecting.</li>
+<li>The drive uses the standard 7-pin Serial ATA connectors with a
+  non-standard power connector (2×6 pins, roughly 2mm spacing; Molex
+  Milli-Grid look similar, and Hirose make them, too).</li>
+<li>Xbox internally calls it <code>\\Device\\CdRom0\\</code></li>
+<li>The raw file system (<a href="../XDVDFS">XDVDFS</a>) on the disk is
+  similar to the file system on the original Xbox disks. Multiple
+  tools are out there that will extract raw ISOs.</li>
+<li>Modified firmware exists for every DVD Drive model, to allow playing
+  backup games. (Unsigned code still can't be run)</li>
+<li>Two different DVD-ROM versions can be interchanged between Xbox 360s
+  if the DVD key (stored in the drive firmware) is changed to match
+  that of the target 360's original drive. Some
+  <a href="../Kernel">Kernel</a> versions (>= 4532?) also require the
+  drive to report as the same model as the original drive.</li>
+</ul>
+<h2 id="confirmed-facts">Confirmed Facts</h2>
+<p><img alt="&lt;File:Dvdmobo.jpg&gt;" src="../images/Dvdmobo.jpg" /></p>
+<p>Close-up of DVD-Drive Motherboard</p>
+<ul>
+<li>The main processor of the LG DVD-ROM drive is an Panasonic
+  MN103S94FDA</li>
+<li>Although present on the disc, The BCA is not used as a security
+  check.</li>
+<li>The XBOX 360 discs has a fake ToC (Table of Contents), containing
+  only the video section. However, using a hotswap method, we can read
+  a XBOX 360 disc using regular drive. First of all, we need to put a
+  full 8.5GB disc in the drive, then we need to hotswap it by a XBOX
+  360 disc (without eject, of course). With the right software, there
+  is a way to backup XBOX 360 discs using regular DVD+R DL drive.</li>
+</ul>
+<h2 id="speculation">Speculation</h2>
+<ul>
+<li>A 12X DVD-ROM drive (DVD+R/RW) Single or dual-layer DVDs. The other
+  supported formats are: CD-DA, CD-ROM, CD-R/RW, WMACD, MP3CD, JPEG
+  Photo CD and original Xbox games for backwards compatibility.</li>
+<li>The DVD-ROM doesn't work on a standard PC workstation, yet.</li>
+<li>I found a very very thin ring on the underside of my DVD (PGR3).
+  It's located at the inner part of the dvd, it's very very thin so
+  you have to look very sharp for it! Maybe this is the reason why
+  the DVD laser can't read the data part. It reads the video part and
+  then can't "jump" over the thin ring to read the data part.</li>
+</ul>
+<h2 id="on-disc-format">On-Disc format</h2>
+<p><img alt="&lt;File:Bca.jpg&gt;" src="../images/Bca.jpg" /></p>
+<p>the 2 different sections and the BCA area of the DVD-ROM are visible
+here.360 discs, like Xbox1 discs, have a lower number of sectors encoded
+in their dvd structure data. This makes it "impossible" to access the
+data after the "leadout" (or at least what is specified as leadout). The
+"standard" area has 0xDB0 (~7MB) sectors, and contains DVD-Video data,
+telling you that this is a game disc. Game data is stored at sector
+offset 0x1FB20 (LBA), so it's "after the leadout". The data itself,
+however, is stored dvd-compliant (standard ECC, standard seed, standard
+EDC, standard sector layout. How boring.). If you can get your drive to
+read past the specified end-of-disc, you can read the game data.</p>
+<p>A specific sector region, between the standard-data and the beginning of
+the game data can't be read. I guess this is the "ring" which is
+visible. It probably contains empty/weak sectors (reading really broken
+frames is always a bit difficult. Someone with the proper equipment
+might want to check this).</p>
+<p><img alt="&lt;File:Bcatest6.jpg&gt;" src="../images/Bcatest6.jpg" /></p>
+<p>Evidence that the BCA is not used by the Xbox 360. The tools which can
+be used for this are basically the same as for Xbox1, just that the data
+offset was different there. There are "scene-tools" which are of course
+so top secret that you never heard about them which can do this. They
+can be hacked for xbox360 (by just modifiying the read offset), and
+there you go.</p>
+<p>(Of course the "how to get your drive's firmware to do this" is highly
+off-topic here, but it usually boils down to using debug ATAPI command
+to write in the drive's memory, then modifiying the drive's idea of the
+"end-of-disc", then using normal read commands. Some others say just
+opening up the DVD-Rom drive from inside out, Inserting a large DVD,
+then lifting it up vertically to do not trigger the eject mode, and then
+inserting a Original XBOX disc will also give you access)</p>
+<p><a href="../Category_Xbox360_Hardware">Category:Xbox360_Hardware</a>
+<a href="../Category_Pages_with_missing_images">Category:Pages with missing images</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

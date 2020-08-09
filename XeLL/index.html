@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>XeLL - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><strong>XeLL</strong> is the Xenon Linux Loader. It's a second-stage bootloader which
+is loaded by a <a href="Run_Code" title="wikilink">loader</a>.</p>
+<p>XeLL catches CPU threads, sets them up, loads an ELF file from either
+network (tftp) or CDROM (ISO9660), and launches it. It's made to boot
+linux. Thus it also contains a flat device tree for linux. However, it
+should be able to load other ELF files as well, like apps based on
+<a href="libXenon" title="wikilink">libXenon</a>.</p>
+<p><a href="https://en.wikipedia.org/wiki/LwIP">lwIP</a> is used for networking. Network
+config is currently hardcoded in network.c (and main.c), and probably
+needs to be modified if you want to use it.</p>
+<p>XeLL is in a very early stage, but is (most of the time) fully working.</p>
+<p>XeLL is available at <a href="https://github.com/Free60Project/xell">https://github.com/Free60Project/xell</a>. There are
+currently no binary releases of original XeLL.</p>
+<p><strong>XeLLous</strong> is an available modification of XeLL made by Redline99. It
+support flashing full nand images (updflash.bin) and patchslots for
+rebooter images (updpatch.bin) and includes a HTTP Server where you can
+get your CPUKey and DVDKey (if KV is in place) and dump your nand.
+XeLLous is availabe on xbins.</p>
+<p><strong>XeLL Reloaded</strong> (Codename: <strong>2Stages</strong>) is the recent branch of XeLL.
+It consists of 2 stages: Stage 1 does the main low level hw init, loads
+Stage 2 into memory and executes it. Stage 2 is built with libxenon -
+ensures the latest codebase.
+For all new features check the
+README<a href="https://github.com/Free60Project/xell/blob/2stages/README">1</a> You
+can get the sourcecode of XeLL Reloaded from Free60 Sourceforge's GIT
+aswell - branch: 2stages (which is the standard branch)
+<a href="https://github.com/Free60Project/xell">2</a></p>
+<h3 id="building-and-running">Building and running</h3>
+<p>0. <strong>Make sure</strong> that you have a working <a href="Cross_Compiler" title="wikilink">Cross
+Compiler</a> toolchain and
+<a href="LibXenon" title="wikilink">LibXenon</a>.</p>
+<p>1. <strong>Grab</strong> the sources from the git repository:</p>
+<p><code>git clone</code><git://github.com/Free60Project/xell.git></p>
+<p>2. <strong>Compile it</strong> using your cross compiler (depending on the name of
+your cross compiler, you may have to adjust the name after CROSS=):</p>
+<p><code>cd xell</code></p>
+<p>If you want to build XeLL NON-2stages sourcecode:</p>
+<p><code>git checkout master</code></p>
+<p>Now compile it</p>
+<p><code>make CROSS=powerpc64-unknown-linux-gnu-</code></p>
+<p>3a. Use the <a href="JTAG_Hack" title="wikilink">JTAG Hack</a> or <a href="Reset_Glitch_Hack" title="wikilink">Reset Glitch
+Hack</a>- you can even upgrade XeLL via USB.</p>
+<p>3b. Deprecated: load <strong>xell-readcd.bin</strong> using the
+<a href="readcd" title="wikilink">readcd</a> method and a patched King Kong game.</p>
+<p>3c. Deprecated: <strong>use the serial loader</strong> from Crawler360 to download
+<strong>xell-serial.bin</strong> to your Xbox360 and run
+it.</p>
+<p><a href="Category_Xbox360_Homebrew_Software.md‏" title="wikilink">Category:Xbox360_Homebrew_Software‏</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

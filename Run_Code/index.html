@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Run Code - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#kernel-version" class="nav-link">Kernel Version</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#modified-drive" class="nav-link">Modified Drive</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#king-kong" class="nav-link">King Kong</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#serial-cable" class="nav-link">Serial Cable</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><strong>This is outdated! Use <a href="JTAG_Hack" title="wikilink">JTAG Hack</a> or <a href="Reset_Glitch_Hack" title="wikilink">Reset
+Glitch Hack</a>!</strong></p>
+<p>Thanks to the work of "Anonymous Hacker" and "Crawler360", it is now
+possible to run your own code on an Xbox 360 with full (hypervisor)
+privileges.</p>
+<p>This page describes what you need in order to run your own code on your
+Xbox 360.</p>
+<h2 id="kernel-version">Kernel Version</h2>
+<p><code>You need an Xbox with a kernel version of 4532 or 4548.</code></p>
+<p>You can check your kernel version in "System -> Console Settings ->
+System Info". The line at the bottom contains your kernel version in the
+format K:2.0.nnnn.0, where nnnn is your four digit kernel version.</p>
+<p>If your kernel version is older, you can update to one of these
+versions. Do not update to a version newer than 4548! You won't be able
+to downgrade! If you already have a newer version, there is nothing you
+can do right now.</p>
+<p>If you buy an Xbox, make sure that its manufacturing date is before 09
+January 2007, so that the kernel version is 4548 or older. You can see
+the manufacturing date ("MFR Date") through the carton without opening
+it.</p>
+<p>If you have a pre-4532 kernel, you need to get the file
+HD_DVD_10-2006.zip from somewhere, check the MD5SUM to be
+cd4db8e2c94266ab73513c361dd5b8f6 (important!), burn it to a CD, and
+insert the CD into your Xbox 360. The program will update your machine
+to kernel version 4532. This file is an authentic Microsoft update
+application, but is not available on Microsoft's servers any more. If
+you own an Xbox, it should be legal for you to download and run this
+application. We are not linking to it here, but it is very easy to get.</p>
+<p>In any case, you should remove the resistor R6T3 on the mainboard, to
+prevent the efuse to be blown, which once blown is making downgrades to
+\&lt;4552 impossible.</p>
+<h2 id="modified-drive">Modified Drive</h2>
+<p>The DVD drive in your Xbox 360 needs to be modified to report non-game
+media as if it were game media. As this is the same modification that is
+needed for running copied games, it won't be reproduced here. A lot of
+good information on this is to be found elsewhere.</p>
+<p>Please note that besides the potential illegal (check your country's
+law!) modification of the drive's firmware, you can also hotswap the
+game disc after it has been authenticated.</p>
+<h2 id="king-kong">King Kong</h2>
+<p>You need a modified version of the game "King Kong" (either PAL or NTSC
+version) on a DVD. Obviously, for legal reasons, you need to own the
+game. Fortunately, the game has been one of the launch games, and used
+copies are easily available and very affordable.</p>
+<p>Since the information on how to dump a game can be used for piracy, it
+won't be described here, but it is easily available elsewhere.</p>
+<p>There are two King Kong patches available right now. The first was the
+one by Crawler360: Launch the modified game, press START on the title
+screen, and a very simple loader will be launched that allows uploading
+your code through a serial cable. There is a newer patch in the wild by
+xorloser, which allows booting directly from CDROM.</p>
+<p>The patcher currently does not work with the newer "classics" version of
+"King Kong" (barcode number 3 307210 240156), as it has a somewhat
+different structure but the patcher looks at "hardcoded" positions in
+the ISO - so it results in an "ID error" (you can check using a XDVDFS
+dump - the new one includes e.g. a file called "GammaAdjust.raw" which
+is not on the first and original DVD with barcode number 3 307210 206695
+for the PAL version).</p>
+<h2 id="serial-cable">Serial Cable</h2>
+<p>The loader from Crawler360 requires a serial cable as described in
+Speedy22's docs. Note that the Xbox 360 serial port works with 3V levels
+and cannot be attached to a PC serial port directly. Even if you are
+working with xorloser's loader, a serial cable can be very useful for
+debugging purposes.</p>
+<p><a href="Category_Xbox360_Development">Category:Xbox360_Development</a>
+<a href="Category_Xbox360_Homebrew_Software">Category:Xbox360_Homebrew_Software</a>
+<a href="Category_Xbox360_Hardware">Category:Xbox360_Hardware</a>
+<a href="Category_Support">Category:Support</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

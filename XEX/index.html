@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>File Format Speculation - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#file-format-speculation" class="nav-link">File Format Speculation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#cryptography" class="nav-link">Cryptography</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#structure-of-the-xex-file" class="nav-link">Structure of the XEX File</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#xex-header" class="nav-link">XEX Header</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#optional-headers" class="nav-link">Optional Headers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#program-section-content" class="nav-link">Program / Section content</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#miscellaneous" class="nav-link">Miscellaneous</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#strings-found-in-some-xex-files" class="nav-link">Strings found in some XEX Files</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#availability-of-xex-files" class="nav-link">Availability of XEX files</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#programs" class="nav-link">Programs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#executable-format" class="nav-link">Executable Format</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="file-format-speculation">File Format Speculation</h1>
+<p>XEX is the executable file format used by the Xbox 360 operating system.
+It seems to be a crypto and packing container for PPC PE executable
+files, comparable to <a href="https://upx.github.io/">UPX</a> or TEEE Burneye.
+It's likely the 360 knows how to grab the section it needs into memory
+and decrypt/decompress on demand, instead of traditional all at once
+extraction.</p>
+<h1 id="cryptography">Cryptography</h1>
+<p>The executable code seems to be crypted, though, there exists some
+uncrypted XEX files in the wild.</p>
+<p>The following program dumps what is supposed to be a hash table.
+Actually it has been reported to work with the first official "Backward
+Compatibility" .XEX File from Microsoft. It takes the XEX file as
+argument.</p>
+<p><code>// default.xex table dumper</code>
+<code>// only works with the default.xex from the xbox360 emulator update package.</code>
+<code>// - th0mas, th0mas.sixbit.org [at] gmail.com</code>
+<code></code>
+<code>#include &lt;stdio.h&gt;</code>
+<code>#include &lt;string.h&gt;</code>
+<code></code>
+<code>#define TABLE_START 0x288</code>
+<code></code>
+<code>struct table {</code>
+<code>unsigned int unknown[6];</code>
+<code>};</code>
+<code></code>
+<code>unsigned int ByteSwap (unsigned int nInt)</code>
+<code>{</code>
+<code>union u {unsigned int vi; unsigned char c[sizeof(unsigned int)];};</code>
+<code>union v {unsigned int ni; unsigned char d[sizeof(unsigned int)];};</code>
+<code>union u un;</code>
+<code>union v vn;</code>
+<code>un.vi = nInt;</code>
+<code>vn.d[0]=un.c[3];</code>
+<code>vn.d[1]=un.c[2];</code>
+<code>vn.d[2]=un.c[1];</code>
+<code>vn.d[3]=un.c[0];</code>
+<code>return (vn.ni);</code>
+<code>}</code>
+<code></code>
+<code>void printTable(struct table *t)</code>
+<code>{</code>
+<code>int i;</code>
+<code>for (i = 0; i &lt; 6; i  ) {</code>
+<code>int j = ByteSwap(t-&gt;unknown[i]);</code>
+<code>printf("0x%08x ", j);</code>
+<code>}</code>
+<code>printf("\n");</code>
+<code>}</code>
+<code></code>
+<code>int main(int argc, char **argv)</code>
+<code>{</code>
+<code>FILE *fp = fopen(argv[1], "rb");</code>
+<code>struct table tmp;</code>
+<code>int numEntries = 0;</code>
+<code>int i;</code>
+<code></code>
+<code>fseek(fp, TABLE_START, SEEK_SET);</code>
+<code>fread(&amp;numEntries, sizeof(unsigned int), 1, fp);</code>
+<code>numEntries = ByteSwap(numEntries);</code>
+<code>for (i = 0; i &lt; numEntries; i  ) {</code>
+<code>fread(&amp;tmp, sizeof(struct table), 1, fp);</code>
+<code>printTable(&amp;tmp);</code>
+<code>}</code>
+<code>}</code>
+<code></code>
+<code></code></p>
+<h1 id="structure-of-the-xex-file">Structure of the XEX File</h1>
+<p>A XEX file is composed of the following:</p>
+<ul>
+<li>A 24 bytes XEX Header</li>
+<li>Variable-length program/section headers</li>
+<li>Program/Section content</li>
+</ul>
+<h2 id="xex-header">XEX Header</h2>
+<p>Total length: 24 bytes.</p>
+<p>Byte ordering: <a href="http://en.wikipedia.org/wiki/Big_Endian">Big Endian</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x4</td>
+<td>ascii string</td>
+<td>"XEX2" magic</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x4</td>
+<td>module flags (see below)</td>
+<td>Flags</td>
+</tr>
+<tr>
+<td>0x8</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>PE data offset</td>
+</tr>
+<tr>
+<td>0xC</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Reserved</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Security Info Offset</td>
+</tr>
+<tr>
+<td>0x14</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Optional Header Count</td>
+</tr>
+</tbody>
+</table>
+<p>The Flags field is a bitfield, as shown below:</p>
+<p><code>bit 0 - Title Module</code>
+<code>bit 1 - Exports To Title</code>
+<code>bit 2 - System Debugger</code>
+<code>bit 3 - DLL Module</code>
+<code>bit 4 - Module Patch</code>
+<code>bit 5 - Patch Full</code>
+<code>bit 6 - Patch Delta</code>
+<code>bit 7 - User Mode</code></p>
+<h2 id="optional-headers">Optional Headers</h2>
+<p>Following the XEX header is a list of the optional headers within the
+file. Use the Optional Header Count field to determine how many there
+are.</p>
+<p>Each Optional Header is composed of the
+following:</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Header ID (see below)</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x8</td>
+<td>unsigned int</td>
+<td>Header Data / Offset to data (see below)</td>
+</tr>
+</tbody>
+</table>
+<p>To handle the data you would first check to see what its size is, to do
+this you need to AND the Header ID by 0xFF.</p>
+<p>If ID &amp; 0xFF == 0x01 then the Header Data field is used to store the
+headers data, otherwise it's used to store the data's offset.
+if ID &amp; 0xFF == 0xFF then the Header's data will contain its size
+if ID &amp; 0xFF == (Anything else) the value of this is the size of the
+entry in number of DWORDS (times by 4 to get real size)</p>
+<h3 id="header-ids">Header IDs</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x2FF</td>
+<td>Resource Info</td>
+</tr>
+<tr>
+<td>0x3FF</td>
+<td>Base File Format</td>
+</tr>
+<tr>
+<td>0x405</td>
+<td>Base Reference</td>
+</tr>
+<tr>
+<td>0x5FF</td>
+<td>Delta Patch Descriptor</td>
+</tr>
+<tr>
+<td>0x80FF</td>
+<td>Bounding Path</td>
+</tr>
+<tr>
+<td>0x8105</td>
+<td>Device ID</td>
+</tr>
+<tr>
+<td>0x10001</td>
+<td>Original Base Address</td>
+</tr>
+<tr>
+<td>0x10100</td>
+<td>Entry Point</td>
+</tr>
+<tr>
+<td>0x10201</td>
+<td>Image Base Address</td>
+</tr>
+<tr>
+<td>0x103FF</td>
+<td>Import Libraries</td>
+</tr>
+<tr>
+<td>0x18002</td>
+<td>Checksum Timestamp</td>
+</tr>
+<tr>
+<td>0x18102</td>
+<td>Enabled For Callcap</td>
+</tr>
+<tr>
+<td>0x18200</td>
+<td>Enabled For Fastcap</td>
+</tr>
+<tr>
+<td>0x183FF</td>
+<td>Original PE Name</td>
+</tr>
+<tr>
+<td>0x200FF</td>
+<td>Static Libraries</td>
+</tr>
+<tr>
+<td>0x20104</td>
+<td>TLS Info</td>
+</tr>
+<tr>
+<td>0x20200</td>
+<td>Default Stack Size</td>
+</tr>
+<tr>
+<td>0x20301</td>
+<td>Default Filesystem Cache Size</td>
+</tr>
+<tr>
+<td>0x20401</td>
+<td>Default Heap Size</td>
+</tr>
+<tr>
+<td>0x28002</td>
+<td>Page Heap Size and Flags</td>
+</tr>
+<tr>
+<td>0x30000</td>
+<td>System Flags</td>
+</tr>
+<tr>
+<td>0x40006</td>
+<td>Execution ID</td>
+</tr>
+<tr>
+<td>0x401FF</td>
+<td>Service ID List</td>
+</tr>
+<tr>
+<td>0x40201</td>
+<td>Title Workspace Size</td>
+</tr>
+<tr>
+<td>0x40310</td>
+<td>Game Ratings</td>
+</tr>
+<tr>
+<td>0x40404</td>
+<td>LAN Key</td>
+</tr>
+<tr>
+<td>0x405FF</td>
+<td>Xbox 360 Logo</td>
+</tr>
+<tr>
+<td>0x406FF</td>
+<td>Multidisc Media IDs</td>
+</tr>
+<tr>
+<td>0x407FF</td>
+<td>Alternate Title IDs</td>
+</tr>
+<tr>
+<td>0x40801</td>
+<td>Additional Title Memory</td>
+</tr>
+<tr>
+<td>0xE10402</td>
+<td>Exports by Name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="program-section-content">Program / Section content</h2>
+<p>The program holds a PE file which is crypted/packed, usually starting at
+offset 0x2000 (described in the XEX header). It's possible to have this
+PE uncrypted/unpacked on debug XEX files. Section contents are encrypted
+with CBC AES, with the key changing for each file. It's probably derived
+from the RSA(?) block at the beginning and a "secret" public key in the
+box. Contents are compressed with microsoft's proprietary LDIC
+compression (hello, xbox1!).</p>
+<h1 id="miscellaneous">Miscellaneous</h1>
+<h2 id="strings-found-in-some-xex-files">Strings found in some XEX Files</h2>
+<p>These appear to be important strings found in the update file</p>
+<ul>
+<li>
+<p>Directories?</p>
+<ul>
+<li>XAdu</li>
+<li>$UPDATES</li>
+<li>MEDIA</li>
+</ul>
+</li>
+<li>
+<p>\Device\CdRom0\default.xex</p>
+</li>
+<li>
+<p>installupdate.exe</p>
+</li>
+<li>
+<p>The xboxkrnl is updated using the updates.</p>
+</li>
+<li>
+<p>xam.xex</p>
+</li>
+<li>
+<p>xboxkrnl.exe</p>
+</li>
+<li>
+<p>Library includes:</p>
+<ul>
+<li>XUIRNDR</li>
+<li>XAUD</li>
+<li>XGRAPHC</li>
+<li>XRTLLIB</li>
+<li>XAPILIB</li>
+<li>LIBCMT</li>
+<li>XBOXKRNL</li>
+<li>D3D9</li>
+<li>XUIRUN</li>
+<li>XUIRNDR</li>
+</ul>
+</li>
+</ul>
+<h2 id="availability-of-xex-files">Availability of XEX files</h2>
+<p>There are currently at least four XEX files freely available on the net:</p>
+<ul>
+<li>
+<p><a href="https://web.archive.org/web/20070311061307/http://assets.xbox.com/en-us/backwardcompatibility/default.zip">Original Xbox Game Support November 2005 update</a> found on <a href="https://web.archive.org/web/20090906002445/http://www.xbox.com/en-US/games/backwardscompatibility.htm">http://www.xbox.com/en-US/games/backwardscompatibility.htm</a>.</p>
+</li>
+<li>
+<p><a href="https://web.archive.org/web/20070315222633/http://download.microsoft.com/download/5/8/a/58a10dbc-9445-4eed-83d5-22f8ad8ee855/default.zip">Original Xbox Game Support December 2005 update</a> found on <a href="https://web.archive.org/web/20090906002445/http://www.xbox.com/en-US/games/backwardscompatibility.htm">http://www.xbox.com/en-US/games/backwardscompatibility.htm</a>.</p>
+</li>
+<li>
+<p><a href="https://web.archive.org/web/20070312113401/http://download.microsoft.com/download/2/8/5/28521E1E-120E-4D05-8310-3E43F2734431/XboxMCELite-ENU.exe">Windows XP Media Center Edition Update Rollup 2</a> from <a href="https://web.archive.org/web/20091029113316/http://www.xbox.com/en-US/pcsetup/alldownloads.htm">http://www.xbox.com/en-US/pcsetup/alldownloads.htm</a>. Use <a href="https://www.cabextract.org.uk/">cabextract</a> to extract the executable file, then do the same on mcrdinstaller/ehd.cab inside the archive. This cabinet file contains XboxMcx.xex.</p>
+</li>
+<li>
+<p><a href="https://web.archive.org/web/20090422010822/http://www.xbox.com/en-US/hardware/x/xbox360hddvdplayer/downloadredirect.htm">XBOX 360 HD DVD Update</a> found on <a href="https://web.archive.org/web/20090805081318/http://www.xbox.com/en-us/hardware/x/xbox360hddvdplayer/download.htm">http://www.xbox.com/en-us/hardware/x/xbox360hddvdplayer/download.htm#disc</a></p>
+</li>
+</ul>
+<h2 id="programs">Programs</h2>
+<ul>
+<li><a href="https://web.archive.org/web/20070808071312/http://www.neotokyo.phear.org/misc/xextools-0.2.tar.bz2">xextools</a>
+    -- A library and tools for manipulating xex files (xexread
+    replacement).</li>
+<li><a href="https://web.archive.org/web/20060629000929/http://oskarsapps.mine.nu/xexdump">xexdump</a> -- Dumps information
+    about xex files (perl)</li>
+<li><a href="http://www.chaosorder.org/xexdump.zip">xexdump</a> -- Dumps
+    information about xex files (windows)</li>
+</ul>
+<h2 id="executable-format">Executable Format</h2>
+<p>XEX files are the default executable format.</p>
+<pre><code>&lt;nowiki&gt;
+File-offset Description
+0       "XEX2"
+0x4     (module flags?)
+0x10        File header offset
+0x14        Definition count (see below)
+0x18        Definition[]
+
+Definition  Description
+0x2FF       Module Sections
+0x3FF
+0x5FF       Delta patch descriptor
+0x4004
+0x4104
+0x42FF
+0x80FF      Binding path(s)
+0x8105
+0x10001     Load Address
+0x10100     Entry Point
+0x10201     Base Address
+0x103FF     Import Libraries
+0x18002     Checksum[4], Filetime[4]
+0x18102     (something debug related)
+0x183FF     PE Name
+
+0x200FF     Static Libraries
+        UINT32 Total size
+        entries[total size / 0x10]
+0x20104     TLS
+        UINT32 Number of Slots
+        UINT32 Raw Data Address
+        UINT32 Data Size
+        UINT32 Raw Data Size
+0x20200     Get Stack Size
+0x20301     Cache Element Count
+0x30000
+0x40006     MediaID[4], Version[4], Baseversion[4], TitleID[4]
+0x40310     Game Ratings
+        UINT8 ESRB
+        UINT8 PEGI
+        UINT8 PEGI-FI
+        UINT8 PEGI-PT
+        UINT8 PEGI_BBFC
+        UINT8 CERO
+        UINT8 USK
+        UINT8 OFLCAU
+        UINT8 OFLCNZ
+        UINT8 KMRB
+        UINT8 BRASIL
+        UINT8 FPB
+
+0x40404     Lan Key (16 Bytes)
+0x406FF     Multidisc, accepted Media IDs
+0x40801
+
+FileHeaderOffset    Description
+0           HeaderSize[4]
+0x4         Image Size[4]
+0x8         RSA Signature
+0x10C           (resulting Image size?)[4]
+0x110           LoadAddress
+0x140           MediaID[16]
+0x150           (AES key seed?)[16]
+0x164           (Input to SHA)[0x14]
+0x178           Region[4]
+0x17C           SHA Hash[0x14]
+0x180           ImageDataCount[4]
+0x184...0x184+(IDC*24)  ImageData0[8], ImageData1[8], ImageData2[8]
+&lt;/nowiki&gt;
+</code></pre>
+<p><a href="Category_Xbox360_System_Software">Category:Xbox360_System_Software</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>NFS Root - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#nfs-root" class="nav-link">NFS Root</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#install-and-setup-a-nfs-server" class="nav-link">Install and Setup a NFS Server</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#compile-the-kernel-that-you-want-to-use" class="nav-link">Compile the kernel that you want to use</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#configure-xell-to-boot-from-your-computer-via-tftp" class="nav-link">Configure Xell to boot from your computer via tftp</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="nfs-root">NFS Root</h1>
+<p>This tutorial assumes that you already have <a href="../XeLL">XeLL</a> and
+<a href="../Xenon_Toolchain">Xenon Toolchain</a>.</p>
+<h2 id="install-and-setup-a-nfs-server">Install and Setup a NFS Server</h2>
+<p>To do this you may have to edit your kernel on your host machine to
+enable nfs.
+For <strong>Gentoo</strong>:
+<a href="https://web.archive.org/web/20130412162546/http://en.gentoo-wiki.com/wiki/NFS/Server">Instructions</a>.
+For <strong>Debian/Ubuntu</strong>:
+<a href="http://www.cyberciti.biz/faq/nfs4-server-debian-ubuntu-linux">Instructions</a>
+Your <strong>/etc/exports</strong> should look like this:</p>
+<p><code>/mnt/nfsroot 192.168.1.*(rw,no_root_squash,no_subtree_check,async)</code></p>
+<p>Change the IP scheme and path to fit your configuration.</p>
+<p>Make the <strong>/mnt/nfsroot</strong> directory and copy the <strong>image.squashfs</strong>
+(from a LiveCD) into it:</p>
+<p><code>mkdir /mnt/nfsroot</code>
+<code>cp image.squashfs /mnt/nfsroot/</code></p>
+<p>Then extract the squashfs as root by doing:</p>
+<p><code>unsquashfs image.squashfs</code></p>
+<p>Now copy everything from the squashfs-root folder to <strong>/mnt/nfsroot</strong> by
+typing:</p>
+<p><code>cd /mnt/nfsroot/squashfs-root &amp;&amp; cp * -vaR /mnt/nfsroot</code></p>
+<p><strong>Alternative:</strong> <a href="../Debootstrap">Debootstrap</a> a fresh powerpc
+system (debian/ubuntu) and use it as NFSroot.</p>
+<p>Let the nfs-share re-export with:</p>
+<p><code>exportfs -ra</code></p>
+<h2 id="compile-the-kernel-that-you-want-to-use">Compile the kernel that you want to use</h2>
+<h3 id="get-the-kernel-sources">Get the kernel sources</h3>
+<p>You can get them from kernel.org 2.6.38.8 at time of writing (in the
+future this might change)</p>
+<h3 id="get-the-patches-and-the-kernel-config">Get the patches and the kernel config</h3>
+<p>You can get them from
+<a href="http://sourceforge.net/projects/free60/files/Linux%20Kernel/">here</a>.</p>
+<p><strong>NOTE:</strong> At the time of writing v0.11.1 was the latest. Make sure that
+your kernel config and your patch are the same version.</p>
+<h3 id="extract-the-kernel">Extract the kernel</h3>
+<p>With the following command:</p>
+<p><code>tar -xvjf linux-2.6.38.8.tar.bz2</code></p>
+<h3 id="patch-the-kernel">Patch the kernel</h3>
+<p>With the following
+commands:</p>
+<p><code>cd linux-2.6.38.8</code>
+<code># assumes that the patch is in the directory above the kernel folder that you just changed into</code>
+<code>patch -p1 --dry-run &lt;../patch-2.6.38.8-xbox0.11.1.diff</code>
+<code># if the dry-run didn't show any errors do the following:</code>
+<code>patch -p1 &lt;../patch-2.6.38.8-xbox0.11.1.diff</code></p>
+<h3 id="copy-and-edit-the-kernel-config-file">Copy and Edit the kernel config file</h3>
+<p>Copy the kernel config to the extracted linux-kernel folder:</p>
+<p><code># The '.' in front of the filename is there on purpose!</code>
+<code>cp /path/to/xenon-config /path/to/extracted/linux-2.6.38.8/.config</code></p>
+<p>Look for a line similar to
+this:</p>
+<p><code>CONFIG_CMDLINE="root=/dev/nfs video=xenonfb nfsroot=192.168.1.100:/mnt/nfsroot rw ip=dhcp panic=60"</code></p>
+<p>Edit the NFSroot to be your IP address and adjust the path correctly.</p>
+<p>Alternative: Use <a href="kboot.conf" title="wikilink">kboot.conf</a> to pass a custom
+CMDLINE to the Server. If you want to do this you set:</p>
+<p><code>CONFIG_CMDLINE_BOOL=n</code>
+<code>CONFIG_CMDLINE=n</code></p>
+<h3 id="build-the-kernel">Build the kernel</h3>
+<p>Do the following:</p>
+<p><code>make ARCH=powerpc CROSS_COMPILE=xenon- menuconfig</code></p>
+<p>Load up your config file that you just edited and then exit and run the
+following command:</p>
+<p><code>make ARCH=powerpc CROSS_COMPILE=xenon- all</code></p>
+<p>You might get an error if so you might need to edit
+arch/powerpc/kernel/pci_64.c line 149 and change the lh to llh both
+occurrences.</p>
+<p>Rerun the last command and you should have a kernel. It will be in
+arch/powerpc/boot/zImage.xenon</p>
+<h2 id="configure-xell-to-boot-from-your-computer-via-tftp">Configure Xell to boot from your computer via tftp</h2>
+<p>To do this you need to recompile Xell. I assume that you already have a
+toolchain, I used the one from libxenon. You will need to edit the Xell
+source file network.c changing the default IP address to your IP
+address. Then compile Xell.</p>
+<h3 id="setup-tftp">Setup tftp</h3>
+<p>For <strong>Gentoo</strong> and 'atftpd' just type:</p>
+<p><code>emerge -v atftp</code></p>
+<p>Then edit the atftp config file:</p>
+<p><code>nano /etc/conf.d/atftp</code></p>
+<p>I changed mine to look like this:</p>
+<p><code>TFTPD_ROOT="/tftpboot"</code></p>
+<p>just edit this line and leave the rest the way it is as it is already
+correct.</p>
+<p>For <strong>Debian/Ubuntu</strong> use the following:
+<a href="http://wiki.debian.org/PXEBootInstall?action=show&amp;redirect=NetworkBooting">Instructions</a>
+(Sections: <strong>Set up DHCP server</strong> and <strong>Setup a TFTP server</strong></p>
+<p>When done with that make the matching tftp directory (if it doesn't
+exist already) and put your linux-kernel into it, rename it <strong>xenon</strong>.</p>
+<p><strong>NOTE</strong>: XeLL assumes a path like <strong>/tftpboot/xenon</strong> in its standard
+configuration. If your tftp-daemon has a path like
+<strong>/var/lib/tftpboot/</strong> set up you need to make a subdir <strong>tftpboot</strong> in
+there. Final path would look like:</p>
+<p><code>/var/lib/tftpboot/tftpboot/</code></p>
+<p>Now if everything worked correctly you should be able to boot your 360
+via NFS.</p>
+<p><strong>NOTE:</strong> It's recommended that the TFTP-Server is the one who serves
+the DHCP Responses and no other DHCP Server is in your network so XeLL
+can find the TFTP Server Adress.</p>
+<p><strong>NOTE(2):</strong> it is also possible to do this without a (linux) dhcpd
+server setup, using a router <b>if you have a router that supports
+it</b> (ddwrt, cisco, possibly some residential grade routers) by
+forwarding all tftp requests to your tftp server.</p>
+<p>for ddwrt: enable DNSmasq</p>
+<p><code>Go to your Web-Interface and log in</code>
+<code>Go to Setup-&gt;Basic Setup</code>
+<code>Make sure that</code>
+<code>DHCP Type = DHCP Server</code>
+<code>DHCP Server = Enable</code>
+<code>Use DNSMasq for DHCP = Checked</code>
+<code>Use DNSMasq for DNS = Checked</code></p>
+<p>Go to Administration->Services</p>
+<p><code>LAN Domain =</code><lan-name>
+<code>DNSMasq = Enabled</code>
+<code>Local DNS = Enabled</code></p>
+<p>in DNSmasq additional options:</p>
+<p><code>domain=lan-name-here</code>
+<code>local=/lan-name-here/</code>
+<code>expand-hosts</code>
+<code>dhcp-option=66,"tftp-server-address-here"</code></p>
+<p>Or edit /tmp/dnsmasq.conf with the correct settings (the above settings)
+<em>adding cisco conf next</em></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

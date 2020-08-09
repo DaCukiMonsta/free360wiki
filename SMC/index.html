@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>SMC - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#the-fifo" class="nav-link">The FIFO</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#command-messages" class="nav-link">Command Messages</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#query-messages" class="nav-link">Query Messages</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#event-messages" class="nav-link">Event Messages</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>The <strong>System Management Controller (SMC)</strong> is an
+<a href="8051/8052" title="wikilink">8051/8052</a> core inside the
+<a href="Southbridge" title="wikilink">Southbridge</a>. It manages the power sequencing,
+and is always active when the Xbox 360 has (standby or full) power
+applied. It controls the frontpanel, has a Realtime clock, decodes IR,
+manages temperatures, fans, DVDROM tray and a bunch of other things. It
+talks with the frontpanel board to set the LEDs. When the system is
+running, the kernel can communicate with the SMC, for example to query
+the realtime clock, open the dvd-tray etc.</p>
+<h2 id="the-fifo">The FIFO</h2>
+<h3 id="sending-a-message">Sending a Message</h3>
+<p>Communication between kernel and SMC happens over a bidirectional FIFO
+(at ea001080 / ea001090).
+All messages and replies are 16 byte long and have the command id in the
+first byte.</p>
+<p><code></p>
+<p><code>void smc_send(void *msg)</code>
+<code>{</code>
+<code>while (!(readl(0xea001084) &amp; 4))    // wait for FIFO ready</code>
+<code>cpu_relax();</code></p>
+<p><code>writel(4, 0xea001084);              // start message</code>
+<code>writesl(0xea001080, msg, 4);        // send 16 bytes</code>
+<code>writel(0, 0xea001084);              // end message</code>
+<code>}</code></p>
+<p></code></p>
+<h3 id="receiving-a-reply">Receiving a Reply</h3>
+<p>Some messages have replies, which will be returned as 16 byte sequence
+similar to the message (they also have the command id in the first
+byte).</p>
+<p><code></p>
+<p><code>int smc_read_reply(void *msg)</code>
+<code>{</code>
+<code>if (!(readl(0xea001094) &amp; 4))       // do we have a reply?</code>
+<code>return 0;</code></p>
+<p><code>writel(4, 0xea001094);              // start reply</code>
+<code>readsl(0xea001090, msg, 4);         // read 16 bytes</code>
+<code>writel(0, 0xea001094);              // end reply</code>
+<code>return 1;</code>
+<code>}</code></p>
+<p></code></p>
+<h2 id="command-messages">Command Messages</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Len</th>
+<th>Example</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[[SMC_Command_0x82</td>
+<td>0x82]]</td>
+<td>2-3</td>
+<td>"\x82\0x04\0x31\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x8c</td>
+<td>0x8c]]</td>
+<td>3</td>
+<td>"\x8c\0x01\0x00\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+</tr>
+</tbody>
+</table>
+<h2 id="query-messages">Query Messages</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Len</th>
+<th>Example Query</th>
+<th>Example Reply</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[[SMC_Command_0x01</td>
+<td>0x01]]</td>
+<td>1:6</td>
+<td>"\x01\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>01 12 00 00 00 00</code></td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x04</td>
+<td>0x04]]</td>
+<td>1:11</td>
+<td>"\x04\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>04 602f 212223 01 00000000</code></td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x07</td>
+<td>0x07]]</td>
+<td>1:10</td>
+<td>"\x07\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>07ff 241b 2fa4 2cfa 262c</code></td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x0a</td>
+<td>0x0a]]</td>
+<td>1:2</td>
+<td>"\x0a\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>0a 60</code></td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x0f</td>
+<td>0x0f]]</td>
+<td>1:2</td>
+<td>"\x0f\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>0f 54</code></td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x11</td>
+<td>0x11]]</td>
+<td>6:2</td>
+<td>"\x11\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>11 02</code></td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x12</td>
+<td>0x12]]</td>
+<td>1:6</td>
+<td>"\x12\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>1241 0203 0000</code></td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x16</td>
+<td>0x16]]</td>
+<td>1:2</td>
+<td>"\x16\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>16 0f</code></td>
+</tr>
+<tr>
+<td>[[SMC_Command_0x17</td>
+<td>0x17]]</td>
+<td>1:2</td>
+<td>"\x17\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"</td>
+<td><code>17 00</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="event-messages">Event Messages</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Len</th>
+<th>Example Message</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[[SMC_Command_0x83</td>
+<td>0x83]]</td>
+<td>2</td>
+<td><code>83 64</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="Category_Xbox360_Hardware">Category:Xbox360_Hardware</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

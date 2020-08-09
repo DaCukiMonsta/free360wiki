@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>XDBF - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#header" class="nav-link">Header</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#entry-table" class="nav-link">Entry Table</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#entry-structure" class="nav-link">Entry Structure</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#free-space-table" class="nav-link">Free Space Table</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#free-space-entry-structure" class="nav-link">Free Space Entry Structure</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#entry-data-offset" class="nav-link">Entry Data Offset</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><strong>XDBF</strong> (<strong>X</strong>box <strong>D</strong>ata <strong>B</strong>ase <strong>F</strong>ile) files are used by the
+Xbox 360 as a generic database. It is used as the format for
+<a href="GPD" title="wikilink">GPD</a> (<strong>G</strong>amer <strong>P</strong>rofile <strong>D</strong>ata) and
+<a href="SPA" title="wikilink">SPA</a> (<strong>S</strong>tatistics, <strong>P</strong>resence and
+<strong>A</strong>chievements) files. SPA files are linked into an Xbox 360
+executable during compilation and are used by the dashboard to generate
+the GPD, Save Game (<a href="STFS" title="wikilink">STFS</a>) Meta-Data and Images. In
+the XAM the DataFile class handles all of the operations associated with
+these files.</p>
+<h1 id="header">Header</h1>
+<p>Total length: 24 bytes (0x18)</p>
+<p>Byte ordering: Dependant on magic. If the magic is little endian then
+the whole file is and is a GFWL, if it's big endian then it's an Xbox
+file.</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x4</td>
+<td>ascii string</td>
+<td>Magic (0x58444246)</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Version (0x10000)</td>
+</tr>
+<tr>
+<td>0x8</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Entry Table Length (in number of entries)</td>
+</tr>
+<tr>
+<td>0xC</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Entry Count</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Free Space Table Length (in number of entries)</td>
+</tr>
+<tr>
+<td>0x14</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Free Space Table Entry Count</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Entry Table Length</strong> and <strong>Free Space Table Length</strong> will be a
+multiple of 512, this is just Xbox's preferred values, but it will read
+the file if you decrease them to make the size of the file smaller, alot
+smaller.</p>
+<h1 id="entry-table">Entry Table</h1>
+<p>The Entry Table is made up of entries, each one under a different
+namespace and ID. The table length will be <strong>Entry Table Length</strong> * 18,
+but only the first <strong>Entry Count</strong> are used.</p>
+<h2 id="entry-structure">Entry Structure</h2>
+<p>Total length: 18 bytes (0x12)</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Namespace (see [[GPD</td>
+</tr>
+<tr>
+<td>0x2</td>
+<td>0x8</td>
+<td>unsigned long</td>
+<td>ID</td>
+</tr>
+<tr>
+<td>0xA</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>OffsetSpecifier</td>
+</tr>
+<tr>
+<td>0xE</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Length</td>
+</tr>
+</tbody>
+</table>
+<h1 id="free-space-table">Free Space Table</h1>
+<p>The <strong>Free Space Table</strong> is used to map out the unused space within the
+file. It is updated whenever n entry changes size. Each entry within the
+<strong>Free Space Table</strong> is composed of the OffsetSpecifier and how much
+space is unused their (Length). The final entry in the <strong>Free Space
+Table</strong> isn't actually free space, but rather is information about the
+length of data after the tables. The <strong>OffsetSpecifier</strong> would be the
+length (file length - header and tables) and the <strong>Length</strong> would be -1
+-<strong>OffsetSpecifier</strong>.</p>
+<h2 id="free-space-entry-structure">Free Space Entry Structure</h2>
+<p>Total length: 8 bytes</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>OffsetSpecifier</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Length</td>
+</tr>
+</tbody>
+</table>
+<h1 id="entry-data-offset">Entry Data Offset</h1>
+<p>To work out the real entry data offset, times the <strong>Entry Table Length</strong>
+by 0x12, then times the <strong>Free Space Table Length</strong> by 0x8 and add the
+result together, and add 0x18 (file header). This is where the beginning
+of the entry data begins, then add the OffsetSpecifier by the entry to
+get the real offset.</p>
+<p>(((<strong>Entry Table Length</strong> * 18) + (<strong>Free Space Table Length</strong> * 8)) +
+24) + OffsetSpecifier</p>
+<p>Just to explain a bit more,</p>
+<p><strong>Entry Table Length</strong> * 18, 18 being the length of each entry, this
+will workout the actual length of the entry table.</p>
+<p><strong>Free Space Table Length</strong> * 8, 8 being the length of each free space
+entry, workout the actual length of the free space table.</p>
+<p>+ 24, 24 is the length of the
+header.</p>
+<p><a href="Category_Xbox360_System_Software">Category:Xbox360_System_Software</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

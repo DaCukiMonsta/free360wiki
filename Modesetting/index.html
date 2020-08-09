@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Modesetting - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#modesetting" class="nav-link">Modesetting</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="modesetting">Modesetting</h1>
+<p>We know libxenon sets graphics modes by writing a complete Ana dump to
+Ana memory and writing some values to the GPU registers. The registers
+affected and the information that gets written is the
+following:</p>
+<pre><code>total_width, hsync_offset, real_active_width, total_height,
+vsync_offset, active_height, width, height,
+
+is_progressive = 0 for non progressive modes, 1 for progressive modes.
+
+rgb = 1, only declared on the modes used through VGA.
+
+composite_sync=1, only declared on the PAL/NTSC non progressive modes.
+
+interlace_factor is set to 1 when mode is progressive and 2 when it is not.
+
+FB_BASE is a constant for the framebuffer base address on libxenon, but we
+get different addresses on the GPU dumps.
+</code></pre>
+
+<p>These are the addresses that get that variables written at some stage of
+the initialization, in the order libxenon write them. I have take out
+the addresses that get fixed values written. As you can see, some
+addresses get written more than one time on the initialization process.
+Following are the values of the GPU dumps we currently own. We need to
+find a way to know if these dumps are valid as some values differ
+drastically from what we can read on libxenon's xenos.c and, if they are
+valid, why the are not the values
+expected.</p>
+<pre><code>0x6000, mode-&gt;total_width - 1
+
+1024x768:  0x0000053f
+1280x1024: 0x00000697
+1280x720:  0x00000671
+1920x1080: 0x0000081f
+
+0x6010, mode-&gt;total_height - 1
+
+1024x768:  0x00000325
+1280x1024: 0x00000429
+1280x720:  0x000002ed
+1920x1080: 0x00000456
+
+0x6004, (mode-&gt;hsync_offset &lt;&lt; 16) | (mode-&gt;real_active_width + mode-&gt;hsync_offset)
+
+1024x768:  0x00eb04eb
+1280x1024: 0x01250625
+1280x720:  0x00c705c7
+1920x1080: 0x002d07ad
+
+0x6014, (mode-&gt;vsync_offset &lt;&lt; 16) | (mode-&gt;active_height * interlace_factor + mode-&gt;vsync_offset)
+
+1024x768:  0x00230323
+1280x1024: 0x00290429
+1280x720:  0x001902e9
+1920x1080: 0x001c0454
+
+0x6030, mode-&gt;is_progressive ? 0 : 1
+
+It is 0x00000000 on all the dumps.
+
+0x6120, mode-&gt;width
+
+This address gets rewritten later.
+
+0x6134, mode-&gt;width
+
+1024x768:  0x000003c0
+1280x1024: 0x000003c0
+1280x720:  0x00000500
+1920x1080: 0x00000360
+
+0x6138, mode-&gt;active_height * interlace_factor
+
+This address gets rewritten later.
+
+0x6110, FB_BASE
+
+1024x768:  0x1f78e000
+1280x1024: 0x1f78e000
+1280x720:  0x1f6a8000
+1920x1080: 0x01c5b000
+
+0x6120, mode-&gt;width
+
+1024x768:  0x000003c0
+1280x1024: 0x000003c0
+1280x720:  0x00000500
+1920x1080: 0x00000360
+
+0x2840, FB_BASE
+
+0x2844, mode-&gt;width
+
+I don't know what hardware is in charge on this memory addresses
+
+0x6584, (mode-&gt;width &lt;&lt; 16) | (mode-&gt;active_height * interlace_factor)
+
+This address gets rewritten later.
+
+0x65e8, (mode-&gt;width &gt;&gt; 2) - 1
+
+This address gets rewritten later.
+
+0x6528, mode-&gt;is_progressive ? 0 : 1
+
+It is 0x00000000 on all the dumps.
+
+0x6584, (mode-&gt;width &lt;&lt; 16) | (mode-&gt;height * interlace_factor)
+
+1024x768:  0x040002d0
+1280x1024: 0x040002d0
+1280x720:  0x050002d0
+1920x1080: 0x035401e0
+
+0x65e8, (mode-&gt;width / 4) - 1
+
+1024x768:  0x000000ff
+1280x1024: 0x000000ff
+1280x720:  0x0000013f
+1920x1080: 0x000000d4
+
+0x6434, mode-&gt;width
+
+It is 0x00000000 in all dumps (!?)
+
+0x6138, mode-&gt;height * interlace_factor
+
+1024x768:  0x000002d0
+1280x1024: 0x000002d0
+1280x720:  0x000002d0
+1920x1080: 0x000001e0
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

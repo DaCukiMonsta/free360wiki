@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Linux Kernel - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#linux-kernel" class="nav-link">Linux Kernel</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#prerequisites" class="nav-link">Prerequisites</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#configuring-and-compiling-the-kernel" class="nav-link">Configuring and Compiling the Kernel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#configuring-and-compiling-the-26388-kernel-experimental" class="nav-link">Configuring and Compiling the 2.6.38.8 Kernel (experimental)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#rootfilesystem-via-nfs" class="nav-link">Rootfilesystem via NFS</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#pre-compiled-kernels" class="nav-link">Pre-compiled Kernels</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="linux-kernel">Linux Kernel</h1>
+<p>There is a set of 7 patches available sent to the linuxppc mailing list
+on 08 March 2007, which have to be applied to Linux 2.6.20. If you're
+interested in kernel development and/or adding new features, please take
+a look at <a href="Linux_Kernel_Development" title="wikilink">Linux Kernel
+Development</a>.</p>
+<ul>
+<li><a href="http://ozlabs.org/pipermail/linuxppc-dev/2007-March/032705.html">(patch 1/7) xenon: add PCI Vendor ID:
+  Microsoft</a></li>
+<li><a href="http://ozlabs.org/pipermail/linuxppc-dev/2007-March/032704.html">(patch 2/7) xenon: add platform
+  support</a></li>
+<li><a href="http://ozlabs.org/pipermail/linuxppc-dev/2007-March/032701.html">(patch 3/7) xenon: udbg support
+  (ugly)</a></li>
+<li><a href="http://ozlabs.org/pipermail/linuxppc-dev/2007-March/032703.html">(patch 4/7) xenon: add southbridge ethernet
+  support</a></li>
+<li><a href="http://ozlabs.org/pipermail/linuxppc-dev/2007-March/032702.html">(patch 5/7) xenon: add SATA
+  support</a></li>
+<li><a href="http://ozlabs.org/pipermail/linuxppc-dev/2007-March/032707.html">(patch 6/7) xenon: add SMC
+  support</a></li>
+<li><a href="http://ozlabs.org/pipermail/linuxppc-dev/2007-March/032708.html">(patch 7/7) xenon: add framebuffer support
+  (ugly)</a></li>
+</ul>
+<p>To run linux, you need to use <a href="../XeLL">XeLL Bootloader</a> available right now. To compile
+the kernel, you need to set up a <a href="../Toolchain">Cross compiler</a> toolchain (unless
+you already have another PowerPC Linux machine).</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>The minimal requirements for successfully cross compiling the Linux
+Kernel for your Xbox are (unverified):</p>
+<ul>
+<li>A machine running a Linux based OS (most likely your PC)</li>
+<li>Sources for the <a href="http://www.kernel.org">Linux Kernel</a></li>
+<li>The Xenon patch or patchset</li>
+<li>Binutils (targeting the powerpc architecture)</li>
+<li>GCC (targeting the powerpc architecture)</li>
+</ul>
+<h2 id="configuring-and-compiling-the-kernel">Configuring and Compiling the Kernel</h2>
+<ol>
+<li>Get the source for the Kernel from
+    <a href="http://www.kernel.org">kernel.org</a> and unpack it.</li>
+</ol>
+<pre><code>cd /usr/src
+wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.21.tar.bz2
+tar -xvjf linux-2.6.21.tar.bz2
+</code></pre>
+
+<ol>
+<li>Download and apply the Xenon patch/patchset matching your kernel.</li>
+</ol>
+<pre><code>cd linux-2.6.21/
+for patch in pci_ids.h.diff linux-2.6.21-xenon-cpu.diff linux-2.6.21-xenon.diff \
+             linux-2.6.21-xenon-enet.diff linux-2.6.21-xenon-platform.diff \
+             linux-2.6.21-xenon-sata.diff linux-2.6.21-xenon-smc.diff \
+             linux-2.6.21-xenon-ugly-fb.diff linux-2.6.21-xenon-ugly-udbg.diff \
+             interlace.diff ; do
+        wget http://op-co.de/xbox360/2.6.21/$patch
+        patch -p1 &lt; $patch
+done
+</code></pre>
+
+<ol>
+<li>
+<p>Configure the Kernel. You can manually fetch a configuration file from the internet (e.g. here) and type:</p>
+<p><code>make ARCH=powerpc CROSS_COMPILE=powerpc64-unknown-linux-gnu- oldconfig</code></p>
+<p>Of course, you can fine-tune your Kernel configuration to fit your needs using</p>
+<p><code>make ARCH=powerpc CROSS_COMPILE=powerpc64-unknown-linux-gnu- menuconfig</code></p>
+</li>
+<li>
+<p>Build the Kernel by typing:</p>
+<p><code>make ARCH=powerpc CROSS_COMPILE=powerpc64-unknown-linux-gnu- all</code></p>
+<p>If everything goes well, you will end up with a file
+arch/powerpc/boot/zImage.xenon containing the kernel which can be loaded
+by <a href="XeLL">XeLL</a>.</p>
+</li>
+</ol>
+<h2 id="configuring-and-compiling-the-26388-kernel-experimental">Configuring and Compiling the 2.6.38.8 Kernel (experimental)</h2>
+<p><a href="http://sourceforge.net/projects/free60/files/Linux%20Kernel">Patches for recent kernels</a>
+are available now, but considered highly experimental.</p>
+<ol>
+<li>Get the source for the Linux 2.6.38.8 Kernel from kernel.org and
+    unpack it.</li>
+</ol>
+<p><code>wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.38.8.tar.bz2
+  tar -xvjf linux-2.6.38.8.tar.bz2</code></p>
+<ol>
+<li>
+<p>Download and apply the experimental Xenon patch &amp; kernel config.</p>
+<p><code>wget -O xenon_config http://sourceforge.net/projects/free60/files/Linux%20Kernel/xenon_config/download
+wget -O patch-2.6.38.8-xbox0.11.1.diff http://sourceforge.net/projects/free60/files/Linux%20Kernel/v2.6.38/patch-2.6.38.8-xbox0.11.1.diff/download
+cd linux-2.6.38.8/
+patch -p1 &lt; ../patch-2.6.38.8-xbox0.11.1.diff
+cp ../xenon_config .config</code></p>
+</li>
+<li>
+<p>Configure the Kernel.</p>
+<p><code>make ARCH=powerpc CROSS_COMPILE=powerpc64-unknown-linux-gnu- menuconfig</code></p>
+</li>
+<li>
+<p>Build the Kernel by typing:</p>
+<p><code>make ARCH=powerpc CROSS_COMPILE=powerpc64-unknown-linux-gnu- all</code></p>
+</li>
+</ol>
+<p>If everything goes well, you will end up with a file
+arch/powerpc/boot/zImage.xenon containing the kernel which can be loaded
+by the XeLL.</p>
+<p>Remember, these patches are Experimental!</p>
+<h2 id="rootfilesystem-via-nfs">Rootfilesystem via NFS</h2>
+<ol>
+<li>
+<p>Configure the kernel (CONFIG_CMDLINE in .config) for NFS (see
+    <a href="../NFS_Root">NFS-Tutorial</a> for details) to match your local
+    setup.</p>
+<p>Example:
+<code>CONFIG_CMDLINE="root=nfs video=xenonfb console=tty0 nfsroot=192.168.1.1:/mnt/nfsroot/xbox rw ip=dhcp"</code>
+2.  Make sure that the IP Plug and Play (<code>CONFIG_IP_PNP*</code> in .config) options match your ip setup method.</p>
+</li>
+</ol>
+<h2 id="pre-compiled-kernels">Pre-compiled Kernels</h2>
+<p><a href="https://web.archive.org/web/20141025055552/http://home.comcast.net/~ssmurf/XeLL-Bootloader-sda2-v2.6.24.3.tar.gz">http://home.comcast.net/~ssmurf/XeLL-Bootloader-sda2-v2.6.24.3.tar.gz</a> (archive.org)</p>
+<p><a href="../Category_Xbox360_Linux">Category:Xbox360_Linux</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

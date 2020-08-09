@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Memory map - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#memory-map" class="nav-link">Memory map</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#physical-mapping" class="nav-link">Physical Mapping</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#pcidevice-mapping" class="nav-link">PCI/Device Mapping</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#smc-area" class="nav-link">SMC Area</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#encryption" class="nav-link">Encryption</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="memory-map">Memory map</h1>
+<h2 id="physical-mapping">Physical Mapping</h2>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Size</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>c000xxxx</code></td>
+<td>0x10000</td>
+<td>Initial "Kernel" (bootloader, not real kernel), mapped L2-Cache?</td>
+</tr>
+<tr>
+<td><code>c8xxxxxx</code></td>
+<td>0x1000000</td>
+<td>memory mapped NAND flash (RO, 1:1, no OoB(ECC))</td>
+</tr>
+<tr>
+<td><code>c9xxxxxx</code></td>
+<td>0x1000000</td>
+<td>???</td>
+</tr>
+<tr>
+<td><code>d0xxxxxx</code></td>
+<td>0x1000000</td>
+<td>PCI config space. Device number etc. is encoded in address, as usual</td>
+</tr>
+<tr>
+<td><code>e0000000</code></td>
+<td>???</td>
+<td>Host-Bridge</td>
+</tr>
+<tr>
+<td><code>e1000000</code></td>
+<td>???</td>
+<td>BIU</td>
+</tr>
+<tr>
+<td><code>ea000000</code></td>
+<td>0x10000</td>
+<td>PCI Bridge</td>
+</tr>
+<tr>
+<td><code>ec800000</code></td>
+<td>0x10000</td>
+<td>GPU</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pcidevice-mapping">PCI/Device Mapping</h2>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Size</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x(200)ea001000</code></td>
+<td>0x100</td>
+<td>System Management Controller</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001200</code></td>
+<td>0x30</td>
+<td>SATA Controller CDRom</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001300</code></td>
+<td>0x30</td>
+<td>SATA Controller HDD</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001400</code></td>
+<td>0x80</td>
+<td>Fast Ethernet Adapter</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001600</code></td>
+<td>0x40</td>
+<td>Audio Controller</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001800</code></td>
+<td>0x400</td>
+<td>XMA Decoder</td>
+</tr>
+<tr>
+<td><code>0x(200)ea002000</code></td>
+<td>0x1000</td>
+<td>OHCI Controller 0</td>
+</tr>
+<tr>
+<td><code>0x(200)ea003000</code></td>
+<td>0x1000</td>
+<td>EHCI Controller 0</td>
+</tr>
+<tr>
+<td><code>0x(200)ea004000</code></td>
+<td>0x1000</td>
+<td>OHCI Controller 1</td>
+</tr>
+<tr>
+<td><code>0x(200)ea005000</code></td>
+<td>0x1000</td>
+<td>EHCI Controller 1</td>
+</tr>
+<tr>
+<td><code>0x(200)ea00c000</code></td>
+<td>0x400</td>
+<td>Secure Flash Controller</td>
+</tr>
+</tbody>
+</table>
+<h2 id="smc-area">SMC Area</h2>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Size</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x(200)ea001000</code></td>
+<td>0x10</td>
+<td>Bus Control</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001010</code></td>
+<td>0x10</td>
+<td>UART</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001020</code></td>
+<td>0x10</td>
+<td>GPIO Port ??</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001030</code></td>
+<td>0x10</td>
+<td>GPIO Port ??</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001040</code></td>
+<td>0x10</td>
+<td>GPIO Port ??</td>
+</tr>
+<tr>
+<td><code>0x(200)ea001050</code></td>
+<td>0x10</td>
+<td>SMI ???</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="encryption">Encryption</h2>
+<p>Dumps of physical memory</p>
+<p>Changed 1 byte in software, dumped again, 16 bytes changed again.</p>
+<p>Might be ~1 cache line</p>
+<p>(0, 1, 2, ...)</p>
+<p>log:</p>
+<pre><code>f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 6e bb c5 d1 62 9e 29 8f e9 3a 6b 7b 4d d0 44 24 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 03 58 f6 c0 f0 13 d5 02 4f 57 a1 d0 50 d3 46 6a 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 1b d6 a6 3b 3c 6e 68 4f da 75 7f a7 8a 02 e4 53 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 38 03 ff f0 61 99 e6 8c b0 3b 2f bb b6 70 06 53 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 0f 55 01 b1 61 9b 35 34 4d ce f4 e8 bb eb cc 4a 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 fc ce 87 2c 30 c0 1c 4f e7 65 da d4 e4 df f6 2b 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 e5 5d f3 38 d9 05 c0 8e 7a a9 b5 a2 fe 11 4c b3 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 84 83 5d 34 55 9b e4 06 26 03 1b f3 0b e9 0f b8 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+f0 35 64 03 de 02 5b 09 b5 7b 81 49 21 e9 d9 77 ba 4d 72 2b cd 0b e9 0c 2b aa ed 53 ea b0 63 49 15 d4 61 28 e0 e2 ea da e3 b8 34 2e cf bb af 0e
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

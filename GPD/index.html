@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>GPD (Game Profile Data) - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#gpd-game-profile-data" class="nav-link">GPD (Game Profile Data)</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#entry-table" class="nav-link">Entry Table</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#entry-structures" class="nav-link">Entry Structures</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#setting-entries" class="nav-link">Setting Entries</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#image-entries" class="nav-link">Image Entries</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#title-entries" class="nav-link">Title Entries</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#avatar-award-entries" class="nav-link">Avatar Award Entries</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#string-entries" class="nav-link">String Entries</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#sync-lists" class="nav-link">Sync Lists</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#sync-data" class="nav-link">Sync Data</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="gpd-game-profile-data">GPD (Game Profile Data)</h1>
+<p><strong>GPD</strong> (<strong>G</strong>ame <strong>P</strong>rofile <strong>D</strong>ata) files are used by the Xbox 360
+to store information inside a profile. They are based on the
+<a href="../XDBF">XDBF</a> format. Profiles are composed of many of these
+files, each named under their respective titles id (e.g. 4D5307E6.gpd
+for Halo 3). The dashboard GPD (<code>FFFE07D1.gpd</code>) contains information and
+sync information about all the
+titles.</p>
+<h2 id="entry-table">Entry Table</h2>
+<h3 id="entry-namespaces">Entry Namespaces</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Achievement</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Image</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Setting</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Title</td>
+</tr>
+<tr>
+<td>5</td>
+<td>String</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Achievement Security (created by GFWL for offline unlocked achievements?)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Avatar Award (360 only, this is only stored with in the [[PEC</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entry-ids">Entry IDs</h3>
+<p>An ID of 0x100000000 indicates that the entry is a Sync List, an ID of
+0x200000000 means its a Sync Data entry. In <strong>PEC</strong> (<strong>P</strong>rofile
+<strong>E</strong>mbedded <strong>C</strong>ontent) files these are changed to 1 and 2.</p>
+<p>The Settings, Achievements, Title and Assets namespaces each have their
+own Sync List and Sync Data entries.</p>
+<p>An ID of 0x8000 is reserved for title information, in the string and
+image namespaces. For achievements and images the entry id must match
+the id enclosed in the entry data.</p>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sync List</td>
+<td>0x100000000</td>
+</tr>
+<tr>
+<td>Sync Data</td>
+<td>0x200000000</td>
+</tr>
+<tr>
+<td>Sync List (PEC)</td>
+<td>PEC</td>
+</tr>
+<tr>
+<td>Sync Data (PEC)</td>
+<td>PEC</td>
+</tr>
+<tr>
+<td>Option Controller Vibration</td>
+<td>0x10040003</td>
+</tr>
+<tr>
+<td>Title Specific 1</td>
+<td>0x63E83FFF</td>
+</tr>
+<tr>
+<td>Title Specific 2</td>
+<td>0x63E83FFE</td>
+</tr>
+<tr>
+<td>Title Specific 3</td>
+<td>0x63E83FFD</td>
+</tr>
+<tr>
+<td>Gamer Yaxis Inversion</td>
+<td>0x10040002</td>
+</tr>
+<tr>
+<td>Gamercard Zone</td>
+<td>0x10040004</td>
+</tr>
+<tr>
+<td>Gamercard Region</td>
+<td>0x10040005</td>
+</tr>
+<tr>
+<td>Gamercard Cred</td>
+<td>0x10040006</td>
+</tr>
+<tr>
+<td>Gamercard Rep</td>
+<td>0x50040011</td>
+</tr>
+<tr>
+<td>Option Voice Muted</td>
+<td>0x10040012</td>
+</tr>
+<tr>
+<td>Option Voice Thru Speakers</td>
+<td>0x10040013</td>
+</tr>
+<tr>
+<td>Option Voice Thru Speakers Raw</td>
+<td>0x10040063</td>
+</tr>
+<tr>
+<td>Option Voice Volume</td>
+<td>0x10040014</td>
+</tr>
+<tr>
+<td>Gamercard Titles Played</td>
+<td>0x10040018</td>
+</tr>
+<tr>
+<td>Gamercard Achievements Earned</td>
+<td>0x10040019</td>
+</tr>
+<tr>
+<td>Gamer Difficulty</td>
+<td>0x10040021</td>
+</tr>
+<tr>
+<td>Gamer Control Sensitivity</td>
+<td>0x10040024</td>
+</tr>
+<tr>
+<td>Gamer Preferred Color First</td>
+<td>0x10040029</td>
+</tr>
+<tr>
+<td>Gamer Preferred Color Second</td>
+<td>0x10040030</td>
+</tr>
+<tr>
+<td>Gamer Action Auto Aim</td>
+<td>0x10040034</td>
+</tr>
+<tr>
+<td>Gamer Action Auto Center</td>
+<td>0x10040035</td>
+</tr>
+<tr>
+<td>Gamer Action Movement Control</td>
+<td>0x10040036</td>
+</tr>
+<tr>
+<td>Gamer Race Transmission</td>
+<td>0x10040038</td>
+</tr>
+<tr>
+<td>Gamer Race Camera Location</td>
+<td>0x10040039</td>
+</tr>
+<tr>
+<td>Gamer Race Brake Control</td>
+<td>0x10040040</td>
+</tr>
+<tr>
+<td>Gamer Race Accelerator Control</td>
+<td>0x10040041</td>
+</tr>
+<tr>
+<td>Gamercard Title Cred Earned</td>
+<td>0x10040056</td>
+</tr>
+<tr>
+<td>Gamercard Title Achievements Earned</td>
+<td>0x10040057</td>
+</tr>
+<tr>
+<td>Avatar Metadata</td>
+<td>0x63E80068</td>
+</tr>
+<tr>
+<td>Gamercard Picture Key</td>
+<td>0x4064000F</td>
+</tr>
+<tr>
+<td>Gamercard Motto</td>
+<td>0x402C0011</td>
+</tr>
+<tr>
+<td>Title Information</td>
+<td>0x8000</td>
+</tr>
+<tr>
+<td>Gamer Name</td>
+<td>0x41040040</td>
+</tr>
+<tr>
+<td>Gamer Location</td>
+<td>0x40520041</td>
+</tr>
+<tr>
+<td>Avatar Information</td>
+<td>0x63e80044</td>
+</tr>
+<tr>
+<td>Avatar Image</td>
+<td>0x8007</td>
+</tr>
+</tbody>
+</table>
+<p>Setting IDs are largely deterministic, based on there type max length
+see <a href="http://pastebin.com/mW3fmvpG">sample code</a></p>
+<h2 id="entry-structures">Entry Structures</h2>
+<h3 id="achievement-entries">Achievement Entries</h3>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Struct size (0x1C)</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Achievement ID</td>
+</tr>
+<tr>
+<td>0x8</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Image ID</td>
+</tr>
+<tr>
+<td>0xC</td>
+<td>0x4</td>
+<td>signed int</td>
+<td>Gamerscore</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Flags (see below)</td>
+</tr>
+<tr>
+<td>0x14</td>
+<td>0x8</td>
+<td>System.DateTime(signed long)</td>
+<td>Unlock Time</td>
+</tr>
+<tr>
+<td>0x18</td>
+<td>null terminated</td>
+<td>unicode string</td>
+<td>Name</td>
+</tr>
+<tr>
+<td>0x18 + <strong>Name</strong> length</td>
+<td>null terminated</td>
+<td>unicode string</td>
+<td>Unlocked Description</td>
+</tr>
+<tr>
+<td>0x18 + <strong>Name</strong> length + <strong>Locked Description</strong> length</td>
+<td>null terminated</td>
+<td>unicode string</td>
+<td>Locked Description</td>
+</tr>
+</tbody>
+</table>
+<h3 id="flags">Flags</h3>
+<pre><code class="cs">public enum AchievementTypes : byte
+{
+    Completion = 1,
+    Leveling = 2,
+    Unlock = 3,
+    Event = 4,
+    Tournament = 5,
+    Checkpoint = 6,
+    Other = 7,
+}
+
+public System.UInt32 Flags;
+public AchievementTypes AchievementType
+{
+    get
+    {
+        return (AchievementTypes)(Flags &amp; 7);
+    }
+    set
+    {
+        if ((System.Byte)value &gt; 7) // to may bits in use :O
+            throw new Exceptions.InvalidAchievement(new System.Exception(&quot;Invalid Type&quot;));
+        if (value != Type)
+        {
+            Flags ^= 4294967288; // Null the 3 bits
+            Flags ^= (System.Byte)Type; // set the new
+        }
+    }
+}
+public System.Boolean AchievementShowUnachieved // !Sectet
+{
+    get
+    {
+        return (Flags &amp; 8) == 8;
+    }
+    set
+    {
+        if (value != ShowUnachieved)
+            Flags ^= 8;
+    }
+}
+public System.Boolean AchievementEarnedOnline
+{
+    get
+    {
+        return (Flags &amp; 65536) == 65536;
+    }
+    set
+    {
+        if (value != AchievementEarnedOnline)
+            Flags ^= 65536;
+    }
+}
+public System.Boolean AchievementEarned
+{
+    get
+    {
+        return (Flags &amp; 131072) == 131072;
+    }
+    set
+    {
+        if (value != Achieved)
+            Flags ^= 131072;
+    }
+}
+public System.Boolean Edited //?
+{
+    get
+    {
+        return (Flags &amp; 1048576) == 1048576;
+    }
+    set
+    {
+        if (value != Edited)
+        {
+            Flags ^= 1048576;
+        }
+    }
+}
+</code></pre>
+
+<h2 id="setting-entries">Setting Entries</h2>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>Int32</td>
+<td>SettingID</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>UInt16</td>
+<td>DOS Time(Last edited?)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>2</td>
+<td>UInt16</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+<td>Byte</td>
+<td>DataType (see Below)</td>
+</tr>
+<tr>
+<td>9</td>
+<td>7</td>
+<td>Byte[]</td>
+<td>Unknown (always null?)</td>
+</tr>
+<tr>
+<td>16</td>
+<td>*depends on DataType*</td>
+<td>*depends on DataType*</td>
+<td>Data</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Context</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Int32</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Int64</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Double</td>
+<td>3</td>
+</tr>
+<tr>
+<td>(UNI)String</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Float</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Binary</td>
+<td>6</td>
+</tr>
+<tr>
+<td>DateTime</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Null</td>
+<td>0xFF</td>
+</tr>
+</tbody>
+</table>
+<p>With data type string and binary there is a leading Int32 with the
+length in the data blob.</p>
+<h2 id="image-entries">Image Entries</h2>
+<p>Image entries are PNG images. example
+code:</p>
+<pre><code class="cs">public System.Byte[] Data
+{
+    get
+    {
+        System.Byte[] TempData;
+        System.IO.MemoryStream TempStream = new System.IO.MemoryStream();
+        Img.Save(TempStream, System.Drawing.Imaging.ImageFormat.Png);
+        TempData = TempStream.ToArray();
+        TempStream.Close();
+        return TempData;
+    }
+    set
+    {
+        System.IO.MemoryStream TempStream = new System.IO.MemoryStream(value);
+        Img = System.Drawing.Image.FromStream(TempStream);
+        TempStream.Close();
+    }
+}
+</code></pre>
+
+<h2 id="title-entries">Title Entries</h2>
+<p>These entries are only located in the FFFE07D1 gpd. To get to them, the
+id for the XDBF entry is the title ID of the game, and the XDBF entry
+type is String. For more information see
+<a href="../XDBF">XDBF</a></p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Title ID</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x4</td>
+<td>signed int</td>
+<td>Achievement Count</td>
+</tr>
+<tr>
+<td>0x8</td>
+<td>0x4</td>
+<td>signed int</td>
+<td>Achievement Unlocked Count</td>
+</tr>
+<tr>
+<td>0xC</td>
+<td>0x4</td>
+<td>signed int</td>
+<td>Gamerscore Total</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>0x4</td>
+<td>signed int</td>
+<td>Gamerscore Unlocked</td>
+</tr>
+<tr>
+<td>0x14</td>
+<td>0x1</td>
+<td>unsigned byte</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>0x15</td>
+<td>0x1</td>
+<td>unsigned byte</td>
+<td>Achievement Unlocked Online Count</td>
+</tr>
+<tr>
+<td>0x16</td>
+<td>0x01</td>
+<td>byte</td>
+<td>Avatar Assets Earned</td>
+</tr>
+<tr>
+<td>0x17</td>
+<td>0x01</td>
+<td>byte</td>
+<td>Avatar Assets Max</td>
+</tr>
+<tr>
+<td>0x18</td>
+<td>0x01</td>
+<td>byte</td>
+<td>Male Avatar Assets Earned</td>
+</tr>
+<tr>
+<td>0x19</td>
+<td>0x01</td>
+<td>byte</td>
+<td>Male Avatar Assets Max</td>
+</tr>
+<tr>
+<td>0x1A</td>
+<td>0x01</td>
+<td>byte</td>
+<td>Female Avatar Assets Earned</td>
+</tr>
+<tr>
+<td>0x1B</td>
+<td>0x01</td>
+<td>byte</td>
+<td>Female Avatar Assets Max</td>
+</tr>
+<tr>
+<td>0x1C</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Flags (see below)</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>0x8</td>
+<td>signed long</td>
+<td>Last Played Time</td>
+</tr>
+<tr>
+<td>0x28</td>
+<td>null terminated</td>
+<td>unicode string</td>
+<td>Title Name</td>
+</tr>
+</tbody>
+</table>
+<p>These are not all the flags, it's just that I don't know the rest.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x1</td>
+<td>Achievement Unlocked Offline, needs to be synced.</td>
+</tr>
+<tr>
+<td>0x2</td>
+<td>Achievement Unlocked, image needs to be downloaded.</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>Avatar Award Unlocked, needs to be downloaded.</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+<p>Title images are also available online:</p>
+<pre><code class="cs">// IconURL
+&quot;http://image.xboxlive.com/global/t.&quot; + ID.ToString(&quot;x8&quot;) +
+&quot;/icon/0/8000&quot;
+
+// LargeBoxArtURL
+&quot;http://tiles.xbox.com/consoleAssets/&quot; + ID.ToString(&quot;x8&quot;) +
+&quot;/en-GB/largeboxart.jpg&quot;
+
+// SmallBoxArtURL
+&quot;http://tiles.xbox.com/consoleAssets/&quot; + ID.ToString(&quot;x8&quot;) +
+&quot;/en-GB/smallboxart.jpg&quot;
+
+// BannerURL
+&quot;http://avatar.xboxlive.com/global/t.&quot; + ID.ToString(&quot;x8&quot;) +
+&quot;/marketplace/0/1&quot;
+
+// MarketplaceURL
+&quot;http://marketplace.xbox.com/en-US/Title/&quot; + ID
+</code></pre>
+
+<h2 id="avatar-award-entries">Avatar Award Entries</h2>
+<p>The entries are only supported within the <a href="../PEC">PEC</a> version
+of the GPD. The images for the avatar awards, are stored in the game GPD
+for that
+game.</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>int32</td>
+<td>Struct size (0x2C)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16</td>
+<td>System.Guid</td>
+<td>ID</td>
+</tr>
+<tr>
+<td>20</td>
+<td>4</td>
+<td>UInt32</td>
+<td>ImageID</td>
+</tr>
+<tr>
+<td>24</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Flags(Same as achievement)</td>
+</tr>
+<tr>
+<td>28</td>
+<td>8</td>
+<td>filetime</td>
+<td>Unlock Time</td>
+</tr>
+<tr>
+<td>36</td>
+<td>4</td>
+<td>Int32</td>
+<td>Subcategory</td>
+</tr>
+<tr>
+<td>40</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Null Terminated</td>
+<td>Unicode</td>
+<td>Name</td>
+</tr>
+<tr>
+<td>44 + <strong>Name</strong> length</td>
+<td>Null Terminated</td>
+<td>Unicode</td>
+<td>Unlocked Description</td>
+</tr>
+<tr>
+<td>44 + <strong>Name</strong> length + <strong>Locked Description</strong> length</td>
+<td>Null Terminated</td>
+<td>Unicode</td>
+<td>Locked Description</td>
+</tr>
+</tbody>
+</table>
+<h3 id="image">Image</h3>
+<p>The Image stored in the GPD is stored in the normal GPD however you can
+grab the image from the server, using the GUID.</p>
+<pre><code class="cs">&quot;http://download.xboxlive.com/content/4d530914/thumbnails/&quot; + size +
+    &quot;/&quot; + ID.ToString() + &quot;.png&quot;); // size 64 128 300
+&quot;http://avatar.xboxlive.com/global/t.&quot; + TitleID + &quot;/avataritem/&quot; +
+    ID.ToString() + &quot;/&quot; + size // 64 or 128
+</code></pre>
+
+<h2 id="string-entries">String Entries</h2>
+<p>String entries are simply a unicode, null terminated string the length
+could be derived from the entry length.</p>
+<h2 id="sync-lists">Sync Lists</h2>
+<p>This is a list of "Sync Items".</p>
+<p>You can find the total sync items by,</p>
+<p>((SyncList.Length / 16) - 1)</p>
+<h3 id="sync-item">Sync Item</h3>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>8</td>
+<td>unsigned long</td>
+<td>EntryID</td>
+</tr>
+<tr>
+<td>8</td>
+<td>8</td>
+<td>unsigned long</td>
+<td>SyncID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sync-data">Sync Data</h2>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x8</td>
+<td>unsigned long</td>
+<td>Next Sync ID</td>
+</tr>
+<tr>
+<td>0x8</td>
+<td>0x8</td>
+<td>unsigned long</td>
+<td>Last Synced ID</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>0x8</td>
+<td>signed long</td>
+<td>Last Synced Time</td>
+</tr>
+</tbody>
+</table>
+<p>IDs in Sync List between last and next are
+pushed
+//confirm?</p>
+<p><a href="../Category_Xbox360_System_Software">Category:Xbox360_System_Software</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

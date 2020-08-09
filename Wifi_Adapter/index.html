@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Introduction - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#introduction" class="nav-link">Introduction</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#disassembly" class="nav-link">Disassembly</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#integrated-circuits" class="nav-link">Integrated Circuits</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#marvell-mvpg16" class="nav-link">Marvell MVPG16</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#marvell-88w8388-bdk1" class="nav-link">Marvell 88W8388-BDK1</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="introduction">Introduction</h1>
+<p><a href="http://www.free60.org/index.php5?title=Special:Upload&amp;wpDestFile=Wlan_back.jpg"><File:Wlan>back.jpg</a></p>
+<p>FCC ID:C3K-WKS168
+IC: 3048A-WKS168</p>
+<p>The <a href="https://web.archive.org/web/20150226023206/http://www.xbox.com:80/en-US/xbox-360/accessories/cablesnetworking/Xbox360WirelessNNetworkingAdapter">Wireless Network
+Adapter</a>
+is a dual-band (2.4/5GHz) 802.11a/b/g interface for the Xbox 360.</p>
+<p>This is a standard USB 2.0 device, and although it is designed to clamp
+onto the back of the console, it works when plugged into a standard USB
+port, given your operating system has accompanying device drivers. See
+below.</p>
+<h1 id="disassembly">Disassembly</h1>
+<p><a href="http://www.free60.org/index.php5?title=Special:Upload&amp;wpDestFile=Wlan_all_pieces.jpg"><File:Wlan> all pieces.jpg</a></p>
+<p>Disassembled; bottom and top covers, PCB, USB cable and antenna</p>
+<p><a href="http://www.free60.org/index.php5?title=Special:Upload&amp;wpDestFile=Wlan_back_opened.jpg"><File:Wlan> back opened.jpg</a></p>
+<p>PCB underside, with <a href="http://www.hannstarboard.com/wps/wcm/connect/english/tw">Hannstar Board Corp.</a> inscription.</p>
+<h1 id="integrated-circuits">Integrated Circuits</h1>
+<p><a href="http://www.free60.org/index.php5?title=Special:Upload&amp;wpDestFile=Wlan_front_opened.jpg"><File:Wlan> front opened.jpg</a></p>
+<p>PCB upper-side, showing the major ICs</p>
+<h2 id="marvell-mvpg16">Marvell MVPG16</h2>
+<p><code>MG16R</code>
+<code>00A2R</code>
+<code>521AC</code></p>
+<p>The MVPG16 is an integrated DC-DC synchronous step-down switching
+regulator. Input voltage ranges from 3.0V-5.5V. Output voltage ranges
+from 0.72V-3.63V and is user-programmable via a single external
+resistor.</p>
+<p>There's no readily available datasheet for this particular IC, however,
+one for it's modular <em>MDx-G16</em> counterpart is, for
+<a href="https://web.archive.org/web/20071005220740/http://www.marvell.com/products/power/dspswitchermodule/MV-S101948-00C.pdf">download</a>.
+There's a two-page
+<a href="https://web.archive.org/web/20070415092855/http://www.marvell.com/products/power/dspswitcher/DSPSwitcher_MVPG15_16_30_31.pdf">brochure</a>
+as well, but is rather lacking in the more technical details.</p>
+<p>Product information page at
+<a href="https://web.archive.org/web/20090603221217/http://www.marvell.com/products/power/dspswitcher/index.jsp">http://www.marvell.com/products/power/dspswitcher/index.jsp</a></p>
+<h2 id="marvell-88w8388-bdk1">Marvell 88W8388-BDK1</h2>
+<p><code>88W8388-BDK1</code>
+<code>AGW1P .2</code>
+<code>0530 A2P</code>
+<code>TW</code></p>
+<p>The 88W8388 is an 802.11a/b/g WLAN SoC from Marvell. Embedded are an
+<a href="https://web.archive.org/web/20100408074133/http://www.arm.com/products/processors/classic/arm9/arm946.php">ARM946E-S</a> core (as per
+the ARM <a href="http://www.arm.com/pdfs/116-4">Networking.pdf Networking</a>
+brochure) and on-chip memory. Together with an integrated TCP/IP stack,
+this allows for off-loading the host processor of protocol processing.
+This SoC is targeted at small-footprint devices, eg. cellular/VoIP
+phones, PDAs, video game consoles, etc.</p>
+<p>The 88W8388 is 88W88305-derived, as indicated below (table reproduced
+from
+<a href="https://web.archive.org/web/20070624073712/http://www.clv.macnica.co.jp/product/marvell/sub1.html">http://www.clv.macnica.co.jp/product/marvell/sub1.html</a>):</p>
+<table>
+<thead>
+<tr>
+<th>Part no.</th>
+<th>b/g/a</th>
+<th>Package option</th>
+<th>CLK Type</th>
+<th>Interface</th>
+<th>Feature/Advantage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>88W8305</td>
+<td>b</td>
+<td>TQFP 128pin 14x14x1.2 TBGA no option Flip chip Yes</td>
+<td>20, 40, 44 CMOS only</td>
+<td>CF SDIO (SPI)</td>
+<td>TKIP (firmware) AES (hardware) WPA (firmware) Power Save</td>
+</tr>
+<tr>
+<td>88W8381</td>
+<td>b</td>
+<td>TQFP 128pin 14x14x1.2 TBGA 132pin 8x8x1 Flip chip Yes</td>
+<td>19.2, 20, 26, 38.4, 40, 44 COMS &amp; Low swing sine wave</td>
+<td>CF SDIO (SPI)</td>
+<td>8305 TKIP (hardware) 802.11e (QoS) 802.11i (Security) BT coex</td>
+</tr>
+<tr>
+<td>88W8385</td>
+<td>a/b/g</td>
+<td>TQFP 128pin 14x14x1.2 TBGA 132pin 8x8x1 Flip chip Yes</td>
+<td>19.2, 20, 26, 38.4, 40, 44 COMS &amp; Low swing sine wave</td>
+<td>CF SDIO (SPI) Generic SPI</td>
+<td>8381 a/g</td>
+</tr>
+<tr>
+<td>88W8388</td>
+<td>a/b/g</td>
+<td>TQFP No TBGA 132pin 8x8x1 Flip chip Yes</td>
+<td>19.2, 20, 26, 38.4, 40, 44 COMS &amp; Low swing sine wave</td>
+<td>SDIO (SPI) USB 2.0</td>
+<td>8385 TCP/IP termination NAND Flash I/F Audio Codec I/F</td>
+</tr>
+</tbody>
+</table>
+<p><em>Baseband Processor Product Selection table</em></p>
+<p><a href="Category_Xbox360_Hardware">Category:Xbox360_Hardware</a>
+<a href="Category_Pages_with_missing_images">Category:Pages with missing images</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

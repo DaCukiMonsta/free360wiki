@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>NAND - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#nand" class="nav-link">NAND</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#flash-memory" class="nav-link">Flash memory</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#nand-points-on-motherboard-for-fat" class="nav-link">NAND Points on Motherboard for FAT</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#nand-points-on-motherboard-for-slim" class="nav-link">NAND Points on Motherboard for SLIM</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#different-sizes" class="nav-link">Different Sizes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#flash-controllers" class="nav-link">Flash Controllers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#simple-calculations" class="nav-link">Simple Calculations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#readingwriting" class="nav-link">Reading/Writing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#sectors" class="nav-link">Sectors</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#nand-file-system" class="nav-link">NAND File System</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#bad-blocks" class="nav-link">Bad Blocks</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#small-flash-chip-close-to-cpu" class="nav-link">Small flash chip close to CPU</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#small-flash-chip-on-front-panel" class="nav-link">Small flash chip on front panel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#tools" class="nav-link">Tools</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="nand">NAND</h1>
+<p><img alt="Flash.jpg" src="../images/Flash.jpg" title="Flash.jpg" /></p>
+<h2 id="flash-memory">Flash memory</h2>
+<p><img alt="&lt;File:nandpinout.png&gt;" src="../images/nandpinout.png" /></p>
+<ul>
+<li>
+<p><a href="https://web.archive.org/web/20150112073857/http://www.hynix.com/datasheet/pdf/flash/HY27US(08_16)281A%20Series(Rev0.6).pdf">Datasheet</a></p>
+</li>
+<li>
+<p>SMT socket that should work if you choose to remove yours:
+  https://web.archive.org/web/20111206034431/http://www.emulation.com:80/cgi-cfm/insert_quantity.cfm?part_number=S%2DTSO%2DSM%2D048%2DA</p>
+</li>
+</ul>
+<p>Attached to <a href="../Southbridge">Southbridge</a></p>
+<h2 id="nand-points-on-motherboard-for-fat">NAND Points on Motherboard for FAT</h2>
+<p><img alt="&lt;File:Nandreadpins.jpg&gt;" src="../images/Nandreadpins.jpg" /></p>
+<h2 id="nand-points-on-motherboard-for-slim">NAND Points on Motherboard for SLIM</h2>
+<p>comming soon</p>
+<h2 id="different-sizes">Different Sizes</h2>
+<p>On different Motherboard Revision also different NANDs were used.
+<a href="../Xenon">Xenon</a>-, <a href="../Zephyr">Zephyr</a>-,
+<a href="../Falcon">Falcon</a>-, <a href="../Opus">Opus</a>- and some
+<a href="../Jasper">Jasper</a>-Consoles (Retails) are using 16MB NANDs,
+other <a href="../Jasper">Jasper</a>-Consoles (Retail),Arcade Bundles which
+came without a HDD, got a 256MB or 512MB NAND onboard. Only 64MB of
+these 256/512MB NAND are used for system files, the rest is used as an
+internal Memory Unit. All Development-/Demo-/Reviewer-/Test-Kits got at
+least a 64MB NAND. Depending on the NAND Size either Small- or
+Large-Block Flash Controllers get used.</p>
+<h2 id="flash-controllers">Flash Controllers</h2>
+<p>The Flash Controller decides how to handle the NAND Memory. There are
+currently two types, the Old/Original SFC which handles the NAND with
+small block and the new SFC (Codename: Panda?) which handles the NAND as
+either small or large blocks.</p>
+<p><strong>Original SFC (pre-Jasper)</strong></p>
+<ul>
+<li>16MB NAND</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Size</td>
+<td>0x4000 (16KB)</td>
+</tr>
+<tr>
+<td>Block Count</td>
+<td>0x400</td>
+</tr>
+<tr>
+<td>Page Size</td>
+<td>0x200</td>
+</tr>
+<tr>
+<td>Pages per Block</td>
+<td>Block size / Page size</td>
+</tr>
+<tr>
+<td>Raw Page Size (incl. SpareData)</td>
+<td>0x210</td>
+</tr>
+<tr>
+<td>Usable Filesystem-Size</td>
+<td>0x3E0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>64MB NAND</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Size</td>
+<td>0x4000 (16KB)</td>
+</tr>
+<tr>
+<td>Block Count</td>
+<td>0x1000</td>
+</tr>
+<tr>
+<td>Page Size</td>
+<td>0x200</td>
+</tr>
+<tr>
+<td>Pages per Block</td>
+<td>Block size / Page size</td>
+</tr>
+<tr>
+<td>Raw Page Size (incl. SpareData)</td>
+<td>0x210</td>
+</tr>
+<tr>
+<td>Usable Filesystem-Size</td>
+<td>0xF80</td>
+</tr>
+</tbody>
+</table>
+<p><strong>New SFC</strong></p>
+<ul>
+<li>Small Block: 16MB NAND</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Size</td>
+<td>0x4000 (16KB)</td>
+</tr>
+<tr>
+<td>Block Count</td>
+<td>0x400</td>
+</tr>
+<tr>
+<td>Page Size</td>
+<td>0x200</td>
+</tr>
+<tr>
+<td>Pages per Block</td>
+<td>Block size / Page size</td>
+</tr>
+<tr>
+<td>Raw Page Size (incl. SpareData)</td>
+<td>0x210</td>
+</tr>
+<tr>
+<td>Usable Filesystem-Size</td>
+<td>0x3E0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Large Block: 256/512MB NAND</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Size</td>
+<td>0x20000 (128KB)</td>
+</tr>
+<tr>
+<td>Block Count (non-MU)</td>
+<td>0x1000</td>
+</tr>
+<tr>
+<td>Page Size</td>
+<td>0x200</td>
+</tr>
+<tr>
+<td>Pages per Block</td>
+<td>Block size / Page size</td>
+</tr>
+<tr>
+<td>Raw Page Size (incl. SpareData)</td>
+<td>0x210</td>
+</tr>
+<tr>
+<td>Usable Filesystem-Size</td>
+<td>0x1E0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="simple-calculations">Simple Calculations</h2>
+<p>Have an address which is without ECC?</p>
+<p><code>realaddr = (addr / 512) * 528 + (realaddr % (mod) 512 &gt; 0 ? realaddr % (mod) 512 : 0);</code></p>
+<p>This also works in reverse:</p>
+<p><code>addr = (realaddr / 528) * 512 + (realaddr % (mod) 528 &gt; 0 ? realaddr % (mod) 528 : 0);</code></p>
+<h2 id="readingwriting">Reading/Writing</h2>
+<p>The Flash can be written or read using a number of methods. If you have
+the old shader hack running the easiest is using <a href="../lflash">lflash</a>.
+You can also wire LPT directly to the flash using this
+<a href="http://img19.imageshack.us/img19/5198/wiringforxenondiagram.jpg">diagram</a>.
+As well, you can build your own USB SPI Flasher with <a href="http://img35.imageshack.us/img35/8949/xbox360usbflasher.png">this
+diagram</a>
+and use <a href="http://nds.cmamod.com/x360/PICFLASH_v3b_plus2.zip">these
+binaries</a>. Flash the
+PicXboot.hex to your PIC, then use the programmer from <a href="http://www.megaupload.com/?d=X6TBNFDC">this
+picflash</a> to flash the
+picflash.hex to the PIC through USB in bootloader mode. Once the device
+is flashed, you can then install it using the drivers from NandPro or
+use TeamXecuters NANDX drivers.</p>
+<p>Once wired you can read/write to the chip using software such as
+<a href="../NandPro">NandPro</a>.</p>
+<p>In software the NAND is mapped to memory address 0x80000200C8000000.</p>
+<ul>
+<li>You must be in real-mode to access the space</li>
+<li>You can read it byte by byte but it is recommended to follow the
+    standard and read it in 4 byte blocks</li>
+</ul>
+<h2 id="sectors">Sectors</h2>
+<ul>
+<li>1: copyright notice, zeros, unencrypted numbers</li>
+<li>2: encrypted data</li>
+</ul>
+<p>@2MB filesystem, unencrypted, but content encrypted, config not</p>
+<h2 id="nand-file-system">NAND File System</h2>
+<p>Informations about the Filesystem on the Xbox360 NAND Flash can be found
+<a href="../NAND_File_System">here</a></p>
+<h2 id="bad-blocks">Bad Blocks</h2>
+<p>Its possible that bad blocks appears when reading/writing to the NAND.
+For solving these look at the following page: <a href="../NAND#Bad_Blocks">Bad Blocks</a></p>
+<h2 id="small-flash-chip-close-to-cpu">Small flash chip close to CPU</h2>
+<p>Some 360s have a small flash chip near the CPU, some don't as seen in
+the following pictures.</p>
+<p>No chip:</p>
+<p><img alt="&lt;File:x360Pro_noeeprom.jpg&gt;" src="../images/x360Pro_noeeprom.jpg" /></p>
+<p>Here is a high-res picture of a premium box with the chip:</p>
+<p><img alt="eeprom.jpg" src="../images/eeprom.jpg" /></p>
+<p>As discussed in this article on the xboxhacker.net forums, this appears
+to be a Atmel 25020 EEPROM. The chip model reads:</p>
+<pre><code>ATMEL524
+25020AN
+SU18
+</code></pre>
+
+<p>Datasheet can be found
+<a href="https://web.archive.org/web/20061005163428/http://www.atmel.com/dyn/resources/prod_documents/doc3348.pdf">here</a>.</p>
+<p>This chip is a low power 2048 bit serial EEPROM according to the
+datasheet.</p>
+<ul>
+<li>
+<p>If the small chip near the CPU is removed the Xbox will boot up and
+  function just fine [Darkmoon 360 experiments]</p>
+</li>
+<li>
+<p>According to IBM the CPU has "An interface for a serial EEPROM in
+  case patch logic configuration was needed during bring-up"</p>
+</li>
+</ul>
+<h2 id="small-flash-chip-on-front-panel">Small flash chip on front panel</h2>
+<p>There is another Atmel chip on the front panel:</p>
+<p><a href="../images/Atmel2.jpg"><File:Atmel2.jpg></a></p>
+<p>Atmel 528 serial EEPROM</p>
+<p>This chip reads:</p>
+<pre><code>ATMEL528
+24C04N
+SU18
+</code></pre>
+
+<p>Datasheet can be found
+<a href="https://web.archive.org/web/20061224151351/http://www.atmel.com/dyn/resources/prod_documents/doc0180.pdf">here</a></p>
+<p>This chip is a low power 4096 bit serial EEPROM according to the
+datasheet.</p>
+<h2 id="tools">Tools</h2>
+<p>360 Flash Tool, which is easy to find
+<a href="http://www.megaupload.com/?d=LGF518J0">Xbox 360 NAND Editor</a> by
+stoker25, open source and semi-complete, has code to do with
+bootloaders/keyvault/filesystem</p>
+<p><a href="../Category_Xbox360_Hardware">Category:Xbox360_Hardware</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

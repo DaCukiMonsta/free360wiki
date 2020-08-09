@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>UART - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#registers" class="nav-link">Registers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#sample-code" class="nav-link">Sample code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#serial-console" class="nav-link">Serial Console</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>The XBox 360 has an UART in the Southbridge.</p>
+<h2 id="registers">Registers</h2>
+<p>To configure the UART, write to register 0x8000 0200 EA00 101C (real
+mode)</p>
+<table>
+<thead>
+<tr>
+<th>Register value</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xE6010000</td>
+<td>115200,8,N,1</td>
+</tr>
+<tr>
+<td>0xB2010000</td>
+<td>38400,8,N,1</td>
+</tr>
+<tr>
+<td>0x63010000</td>
+<td>19200,8,N,1</td>
+</tr>
+</tbody>
+</table>
+<p>To send a byte, do a 32 bit write to 0x8000 0200 EA00 1014. After you
+sent something to the serial port, the status should be read from 0x8000
+0200 EA00 1018.</p>
+<h2 id="sample-code">Sample code</h2>
+<p>Init UART speed:</p>
+<pre><code>    li        %r7, 0x0200
+    oris      %r7, %r7, 0x8000
+    sldi      %r7, %r7, 32
+    oris      %r7, %r7, 0xEA00
+    #ori       %r7, %r7, 0x101C
+    lis       %r8, 0
+    oris       %r8, %r8, 0xE601       # 115200,8,N,1
+    stw       %r8, 0x101C(%r7)
+</code></pre>
+
+<p>Send char '!' to the serial port (UART):</p>
+<pre><code>        li %r8, '!'
+    slwi %r8, %r8, 24
+    stw %r8, 0x1014(%r7)        # send the character
+    sync
+    isync
+1:
+    lwz %r8, 0x1018(%r7)        # wait until character is sent
+    rlwinm. %r8, %r8, 0, 6, 6
+    beq 1b
+</code></pre>
+
+<p>Get char from the serial port (UART):</p>
+<pre><code>     lis %r4, 0x8000
+     ori %r4, %r4, 0x200
+     rldicr %r4, %r4, 32,31
+     oris %r4, %r4, 0xEA00
+1:
+     lwz %r8, 0x1018(%r4)
+     rlwinm %r7, %r8, 0,8,5
+     cmplwi %r7, 0             # check the status of the UART before input
+     bne 1b
+     rlwinm. %r7, %r8, 0,7,7
+     beq 1b
+     lwz %r3, 0x1010(%r4)      # input char from address 8000 0200 EA00 1010
+     srwi %r3, %r3, 24
+</code></pre>
+
+<h2 id="serial-console">Serial Console</h2>
+<p>The Serial Console can be very useful when debugging the <a href="Linux_Kernel" title="wikilink">Linux
+Kernel</a> or diagnosing the <a href="Boot_Process" title="wikilink">Boot
+Process</a>.</p>
+<h3 id="diagram-fat">Diagram FAT</h3>
+<p><img alt="&lt;File:J2B1_SCON.png&gt;" src="J2B1_SCON.png" title="File:J2B1_SCON.png" /></p>
+<h3 id="diagram-all">Diagram ALL</h3>
+<p><img alt="&lt;File:uart_all.jpg&gt;" src="uart_all.jpg" title="File:uart_all.jpg" /></p>
+<p>You can either use the GND pin on the header (might be difficult to
+solder for the inexperienced) or some alternative GND pin like the one
+from the <a href="Stereo_DAC" title="wikilink">Stereo DAC</a> nearby the J2B1 header.</p>
+<p>Note that you will probably need a <a href="Level_Shifter" title="wikilink">Level
+Shifter</a> to connect the 3.3V RX/TX pins to
+your <a href="PC_Serial_Port" title="wikilink">PC Serial Port</a> (which usually uses
++/-12V)</p>
+<p>The Level Shifter can be either powered from the standby 3.3V on pin 7
+(always on) or better from the active 3.3V on pin 8 or from an external
+power source.</p>
+<p>It is also possible to use some cheap <a href="http://wiki.openwrt.org/oldwiki/openwrtdocs/customizing/hardware/serial_console#cellphone.data.cables">cell phone data
+cables</a>
+as a PC interface.</p>
+<p><a href="Category_Xbox360_Hardware">Category:Xbox360_Hardware</a>
+<a href="Category_Xbox360_Development">Category:Xbox360_Development</a>
+<a href="Category_Xbox360_Homebrew_Software">Category:Xbox360_Homebrew_Software</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

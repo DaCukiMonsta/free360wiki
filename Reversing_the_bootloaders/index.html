@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Reversing the bootloaders - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#requirements" class="nav-link">Requirements</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#reversing" class="nav-link">Reversing</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#finding-the-entrypoint" class="nav-link">Finding the entrypoint</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#analyzing-the-loader" class="nav-link">Analyzing the loader</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#finding-functions" class="nav-link">Finding functions</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#finding-authentication-procedures" class="nav-link">Finding authentication procedures</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#code-snippets" class="nav-link">Code Snippets</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#reversed-bootloaders" class="nav-link">Reversed Bootloaders</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>Since there seems to be little to none documentation about this so I've
+decided to write up a guide to help all the up-and-coming hackers in the
+scene.</p>
+<h1 id="requirements">Requirements</h1>
+<ul>
+<li>IDA Pro (This costs money, it's recommended you buy a license)</li>
+<li>PPC Altivec plugin (ver. 1.8 is recommended)</li>
+<li>Decrypted loader (1BL/CB(_A)/CB_B/CD/CF)</li>
+<li>Kernel with symbols, find this at usual places (Also, match these up
+    by the date modified and put the pdb in same folder as exe)</li>
+</ul>
+<h1 id="reversing">Reversing</h1>
+<h2 id="finding-the-entrypoint">Finding the entrypoint</h2>
+<p>The entrypoint of the loader is located at offset 0x8-0xC in the <a href="Bootloaders" title="wikilink">loader
+header</a>, once you've found the entrypoint the
+reversing can begin.</p>
+<h2 id="analyzing-the-loader">Analyzing the loader</h2>
+<p>Open the loader in IDA Pro and make sure it's loading as a binary file
+with the processor type set to PowerPC: ppc. Once you've done that a
+dialog should appear asking if you want it to be mapped to ROM or RAM,
+leave this screen as it is and just press OK.
+IDA will then notify you that since it's a binary file the entrypoint is
+unknown, so press G to show the go to address screen and put in the
+entrypoint you found earlier.
+Press C to turn this entrypoint into code and start IDA's analysis. This
+should only take a few seconds and then the entire bootloader should be
+fully analyzed.</p>
+<h2 id="finding-functions">Finding functions</h2>
+<p>I wasn't going to post this publicly for fear of MS updating their
+bootloaders to use different code, but I realized that keeping info back
+is for kids.
+Thankfully Microsoft use the same code for the most of the functions in
+the bootloaders as they do in the kernel, if you have a copy of the
+kernel and symbols (available in certain private SDKs..) you can just
+find the functions in the kernel, copy the hex code for them (make sure
+none of the branch instructions are in the code, as these use static
+offsets) and search for that hex in the bootloader. If you've done it
+correctly you should come across code in the bootloader which looks near
+identical to the code in the kernel. Just rename the sub to what it's
+called in the kernel and you've successfully "reversed" a section of the
+bootloader :D</p>
+<p>(also, before anyone complains to me about this I know this is the
+"noob" way of doing it, but its much easier then having to trawl through
+code)</p>
+<h3 id="functions-used-by-the-bootloaders">Functions used by the bootloaders</h3>
+<p>Note, this list is incomplete, I've only included functions used for
+authentication/decompression here, also some loaders don't include all
+these functions.</p>
+<ul>
+<li>LDICreateDecompression</li>
+<li>LDIDecompress</li>
+<li>LZX_Decode</li>
+<li>LZX_DecodeInit</li>
+<li>LZX_DecodeNewGroup</li>
+<li>XeCryptBnDw_Copy</li>
+<li>XeCryptBnQwBeSigDifference</li>
+<li>XeCryptBnQwBeSigFormat</li>
+<li>XeCryptBnQwNeCompare</li>
+<li>XeCryptBnQwNeModInv</li>
+<li>XeCryptBnQwNeModMul</li>
+<li>XeCryptBnQw_Copy</li>
+<li>XeCryptHmacSha</li>
+<li>XeCryptHmacShaFinal</li>
+<li>XeCryptHmacShaInit</li>
+<li>XeCryptMemDiff</li>
+<li>XeCryptRc4Ecb</li>
+<li>XeCryptRc4Key</li>
+<li>XeCryptRotSum</li>
+<li>XeCryptRotSumSha</li>
+<li>XeCryptShaFinal</li>
+<li>XeCryptShaInit</li>
+<li>XeCryptShaTransform</li>
+<li>XeCryptShaUpdate</li>
+</ul>
+<h2 id="finding-authentication-procedures">Finding authentication procedures</h2>
+<p>Almost all the authentication subs in the bootloaders use
+XeCryptRotSumSha, once you've managed to find that function you can just
+do "Jump to xref to operand..." to find them. The bootloader decryption
+routines all use XeCryptRc4Ecb, if you find that you can find the
+decryption routines quite easily.</p>
+<h3 id="tips">Tips</h3>
+<ul>
+<li>If you see the value 0x3C0030 in the function, this is used during
+    CF decryption/authentication. You've just found the function used to
+    decrypt/auth CF.</li>
+<li>li r3, 0 is used to return that the decryption/auth failed, if
+    theres any branches to code which has this then that means the
+    branch is only used if a check fails, if you want to make it so you
+    can run the next bootloader unauthenticated you could just nop (60
+    00 00 00) out all the branches to this code.</li>
+<li>Patching the call to XeCryptRc4Ecb with nop will disable encryption
+    for the next loader, this is what the glitch hack build.py does to
+    the CB_B of slims, along with patching out the branch to the panic
+    function.</li>
+<li>All of the bootloaders have a function to handle post output during
+    boot. If you find that function, you can follow its references and
+    use the post codes from <a href="POST" title="wikilink">POST</a> to step through each
+    bootloader and figure out what each one is doing.</li>
+<li>Please keep in mind that the newest versions of the bootloaders had
+    their post codes removed due to the RGH hack relying on them.</li>
+</ul>
+<h2 id="code-snippets">Code Snippets</h2>
+<h3 id="panic">panic</h3>
+<pre><code>panic:
+     li    r0, 0         # Load Immediate
+     mtspr CTRL, r0      # Move to sprg,
+     b     panic         # Branch
+</code></pre>
+<h3 id="post-output">post output</h3>
+<pre><code>#Sends the lowest byte of r4 to the post buffer
+post:
+    sldi    r4, r4, 56
+    std r4, 0(r3)
+    blr
+</code></pre>
+<h1 id="reversed-bootloaders">Reversed Bootloaders</h1>
+<p>The following bootloaders have already been reversed and posted:</p>
+<ul>
+<li><a href="1bl_Code" title="wikilink">1bl Code</a></li>
+<li><a href="CB_Code" title="wikilink">CB Code</a></li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

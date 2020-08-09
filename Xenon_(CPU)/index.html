@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Xenon (CPU) - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#specifications" class="nav-link">Specifications</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#linux-support" class="nav-link">Linux Support</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#external-links" class="nav-link">External Links</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><img alt="KL_Microsoft_XBOX_380_CPU_ES.jpg‎" src="KL_Microsoft_XBOX_380_CPU_ES.jpg‎" title="KL_Microsoft_XBOX_380_CPU_ES.jpg‎" /> <strong>Xenon</strong> is the CPU that is used
+in the Xbox 360. The processor, internally codenamed <em>Waternoose</em> by IBM
+and XCPU by Microsoft. "The basic design is a 64-bit <em>PowerPC</em>
+architecture, with the complete <em>PowerPC ISA available</em>."
+It is different from the Intel Pentium III in the original Xbox: the
+<em>Xenon</em> CPU is composed of three symmetrical cores on a single die, each
+core has two symmetric hardware threads (SMT), for a total of six
+hardware threads available to games. Each individual core also includes
+32 KiB of L1 instruction cache and 32 KiB of L1 data cache.</p>
+<h2 id="specifications">Specifications</h2>
+<ul>
+<li>The package is a 2-2-2 FC-PBGA, measuring 31mm by 31mm</li>
+<li>168 mm2 die size; one cpu core is about 28mm2</li>
+<li>Support logic for Array and Logic Built in Selftest</li>
+<li>165 Million transistors</li>
+<li>Three symmetrical cores running at 3.2 GHz each = 9.6Ghz throughput.<ul>
+<li>32 KiB of L1 instruction cache and 32 KiB of L1 data cache per
+    core</li>
+<li>64 bit CPU cores based on the IBM 970 "G5" design</li>
+<li>Each core is two way SMT-capable and clocked at 3.2Ghz</li>
+<li>2× (128×128 bit) register files for each core</li>
+<li>Two hardware threads per core; six hardware threads total</li>
+<li>VMX-128 vector unit per core; three total</li>
+<li>128 VMX-128 registers per hardware thread</li>
+</ul>
+</li>
+<li>1 MB L2 cache<ul>
+<li>(lockable by the GPU) running at half-speed (1.6 GHz) with a
+    256-bit bus</li>
+<li>51.2 gigabytes per second of L2 memory bandwidth (256 bit × 1600
+    MHz)</li>
+</ul>
+</li>
+<li>21.6 GB/s front side bus (aggregated 10.8 GB/s upstream and
+    downstream)</li>
+<li>115 GFLOPS theoretical peak performance</li>
+<li>CPU Integer Perf (VPR): 1089 (363 each)</li>
+<li>Dot product performance: 9.6 billion per second</li>
+<li>IBM eFuse technology</li>
+<li>IBM's PowerPC instruction set architecture</li>
+<li>Restricted to In-order code execution</li>
+<li>Big endian architecture</li>
+</ul>
+<h2 id="linux-support">Linux Support</h2>
+<ul>
+<li>We have full SMP support, so we can use all three cores.</li>
+<li>However, we currently need to disable the secondary threads because
+    of a yet-to-be analyzed stability issue.</li>
+<li>The CPU is quite slow on general purpose code. Due to the non
+    out-of-order execution core, it heavily relies on the compiler to do
+    proper optimizations. GCC currently doesn't know how to do this,
+    resulting in running but very inefficient code.</li>
+<li>The Cell people worked on PPU-GCC, from which the Xenon will benefit
+    as well, as the PPC cores is quite similiar to the Cell's PPU. All
+    PPU-GCC work have been merged on mainline GCC 4.4</li>
+</ul>
+<h2 id="external-links">External Links</h2>
+<ul>
+<li><a href="https://web.archive.org/web/20081205055833/http://www-128.ibm.com:80/developerworks/power/library/pa-fpfxbox/index.html?ca=drs-">Application-customized CPU design: The Microsoft Xbox 360 CPU
+    story</a>
+    Jeffrey Brown, Distinguished Engineer, IBM</li>
+<li>["Power" Architecture
+    Technology]https://web.archive.org/web/20090213042736/http://www.ibm.com/developerworks/power) at IBM</li>
+<li><a href="http://www.ibm.com/developerworks/library/pa-soc1/">SoC drawer: The resource
+    view</a> at IBM
+    (mentions Xbox CPU design. Gets nitty gritty on resources and
+    scheduling, i/o interconnects, &amp; on chip memory)</li>
+<li>Just like being there: Papers from the Fall Processor Forum 2005:
+   <a href="https://web.archive.org/web/20090501114949/www.ibm.com/developerworks/power/library/pa-fpfxbox/">Application-customized CPU design</a>
+   at IBM (Explore the customized IBM PowerPC processor designed for
+   the Microsoft XBox 360)</li>
+<li><a href="https://xbox-scene.xbins.org/forums/index.php?showtopic=231928">Xenon hardware overview</a>
+    by Pete Isensee, Development Lead, Xbox Advanced Technology Group,
+    written some time before 23 June 2004</li>
+<li><a href="http://arstechnica.com/old/content/2005/06/xbox360-2.ars">Ars Technica explains the Xenon CPU</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Xenon_(processor)">Xbox360 CPU</a> at
+    Wikipedia</li>
+<li><a href="http://en.wikipedia.org/wiki/PowerPC_G5">PowerPC 970</a> at Wikipedia</li>
+<li><a href="http://en.wikipedia.org/wiki/PowerPC">PowerPC</a> at Wikipedia</li>
+<li><a href="http://en.wikipedia.org/wiki/POWER4">POWER4</a> at Wikipedia</li>
+<li><a href="https://web.archive.org/web/20100328024533/http://www.ccw.com.cn/notebook/pczx/sy/htm2005/20051028_16OMI.htm">CPU Chip for Xbox 360 Manufacturing Overview, FSB, PPC Core, VMX &amp; FPU, &amp; L2 Cache block diagrams</a>
+    from IBM</li>
+</ul>
+<p><a href="Category_Xbox360_Hardware">Category:Xbox360_Hardware</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

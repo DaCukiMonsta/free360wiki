@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>R6T3 - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#important-note" class="nav-link">Important Note</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#alternative-to-removing-r6t3" class="nav-link">Alternative to Removing R6T3</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#external-links" class="nav-link">External Links</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#slim-version" class="nav-link">Slim Version</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><strong>R6T3</strong> is the label of a resistor on the mainboard of the Xbox 360, it
+supplies the necessary voltage for the <a href="Xenon_(CPU)" title="wikilink">Xenon
+(CPU)</a> to burn the so-called <strong>eFuses</strong>.
+Burned <strong>eFuses</strong> prevent older firmwares (any older rev. than 4552)
+from running on your Xbox 360, thus eliminating the possibility to
+downgrade to an earlier version of the kernel.
+The Resistor itself is located in the field T-6. It is a 10k Ohm (10,000
+Ohm) SMT resistor (Case 0402) functioning as part of a current limiting
+circuit.</p>
+<p><img alt="R6t3zoom.png" src="R6t3zoom.png" title="R6t3zoom.png" /></p>
+<p>The eFuse circuit uses a dual BJT array part
+<a href="http://www.datasheetcatalog.org/datasheet/lrc/MBT3904DW1T1.pdf">MBT3904</a>.
+The datasheet says:</p>
+<p>Q1 has</p>
+<ul>
+<li>Pin 3 - collector</li>
+<li>Pin 4 - emmiter</li>
+<li>PIn 5 - base</li>
+</ul>
+<p>Q2 has</p>
+<ul>
+<li>Pin 1 - emmiter</li>
+<li>Pin 2 - base</li>
+<li>PIn 6 - collector</li>
+</ul>
+<p>From looking at the board traces, R6T3 is the collector resistor to
+Q2.
+The collector pin enables the LDO that provides the voltage for the
+eFuse burning.
+The base of Q2 is tied to the collector of Q1.
+When Q2 is on, the voltage at the collector is logic LO and the LDO is
+disabled (logic LO at the enable pin).
+Q2 turns on when the base is logic HI, which means Q1 must be off, so
+the voltage will pull high through the Q1 collector resistor.</p>
+<h2 id="important-note">Important Note</h2>
+<ul>
+<li>The removal of R6T3 will cause an E80 system error if the NXE update
+    is installed.</li>
+<li>Replacing the resistor with the original or with another 10K Ohm
+    resistor usually fixes the error state.</li>
+<li>Given the difficulty in surface mounting a resistor as small as
+    R6T3, simply holding a 10K Ohm in place while the 360 is powering up
+    after giving a E80 will typically allow normal operation from then
+    on.</li>
+<li>Care must be taken not to bridge the gap without a resistor in place
+    as this may cause system damage.</li>
+</ul>
+<h2 id="alternative-to-removing-r6t3">Alternative to Removing R6T3</h2>
+<p>For people who find removing R6T3 too difficult can follow one of the
+two solution:</p>
+<p>if U6T1 is present
+<img alt="Xenon1DONE12.jpg" src="../images/Xenon1DONE12.jpg" /></p>
+<p>if U6T2 is present
+<img alt="Jasper1DONE12.jpg" src="../images/Jasper1DONE12.jpg" />
+Shorting pin 6 to pin 1 (C to E) of the transistor pack, or pin 6 (C) to
+any conveniant ground. Thats only one jumper, ena pin cant go hi, since
+its grounded.</p>
+<h2 id="external-links">External Links</h2>
+<ul>
+<li><a href="https://web.archive.org/web/20100213101317/http://www.xboxhacker.org/index.php?topic=13658.0">Just discussing possible alternatives to removing
+    R6T3</a> at
+    XboxHacker</li>
+<li><a href="http://www.360mods.net/modules/coppermine/albums/userpics/efuse/r6t3.jpg">HIGH RES R6T3
+    IMAGE</a></li>
+</ul>
+<h1 id="slim-version">Slim Version</h1>
+<p>The slim version of R6T3 on the trinity motherboard is R4R1. It is
+located right next to the x-clamp on the bottom of the motherboard. Some
+people have reported removing the resistor will not throw an error on
+startup, but will throw an error if the console tries to update.
+<img alt="Trinity_R4R1.jpg" src="../images/Trinity_R4R1.jpg" title="Trinity_R4R1.jpg" /></p>
+<p><a href="Category_Xbox360_Hardware">Category:Xbox360_Hardware</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

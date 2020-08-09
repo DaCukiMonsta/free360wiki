@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>HvxExpansionInstall - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#hvxexpansioninstall" class="nav-link">HvxExpansionInstall</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#reversed-pseudocode" class="nav-link">Reversed Pseudocode</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="hvxexpansioninstall">HvxExpansionInstall</h1>
+<p>A system call for "installing" code under <a href="../Hypervisor">Hypervisor</a> context.
+Registers an HvxExpansion structure in the expansion table</p>
+<h2 id="reversed-pseudocode">Reversed Pseudocode</h2>
+<pre><code class="cpp">// r0 is 0x70
+// Parameters are taken in r3 and r4, respectively
+// r2, r5 - r9 are 0
+
+typedef struct _EXP_HEADER
+{
+    DWORD Magic;        // &quot;SIGM&quot; or &quot;SIGC&quot;
+    DWORD Flags;        // Used in verifcation Flags = 1, 2
+    DWORD Size;         // Should be &lt;= size used to install
+    BYTE ShaHash[0x14]; // SHA-1 digest of everything after header
+    BYTE AESFeed[0x10];
+    XECRYPT_SIG Sig;    // RSA sig of the first 0x30 bytes of the header ; 0x100 length ; encrypted
+    //DWORD ExpID;
+} EXP_HEADER, *PEXP_HEADER
+
+typedef struct _HV_EXPANSION_SECTION_INFO {
+    DWORD Size1;   // Length of some kind
+    DWORD Size2;   // Length of code data
+    DWORD Size3;   // Length of some kind
+    DWORD Padding; // 0x10 Align
+} EXP_SECTION_INFO;
+
+typedef struct _HV_EXPANSION_INFO {
+    DWORD ExpansionId;       // Id to be used when called after install
+    DWORD ExpansionFlags;    // Compared with something in HV
+    DWORD ExpansionVersion;  // Used to lock to a hv version
+    DWORD ExpansionVersion2; // Used to lock to a hv version
+    QWORD Reserved;          // Havent seen this used
+    QWORD Unknown;           // Compared with something in HV
+    DWORD ExpansionDataPos1; // Position of expansion data/info
+    DWORD ExpansionDataLen1; // Length
+    DWORD ExpansionDataPos2; // Position of expansion data/info
+    DWORD ExpansionDataLen2; // Length
+} EXP_INFO;
+
+typedef struct _HV_EXPANSION {
+    EXP_HEADER       Header;           // Expansion Header
+    EXP_INFO         ExpansionInfo;    // Expansion Info
+    EXP_SECTION_INFO SectionInfo;      // Sections pointed to by ExInfo
+    DWORD            ExpansionCode[1]; // 0x10 Align
+} EXP;
+
+QWORD HvxExpansionInstall(PVOID pExpAddy, DWORD cExpSize)
+{
+    // Check 0x80 byte alignment on payload address
+    if(pExpAddy &amp; 0x7F)
+        return 0xC8007000;
+    // Check 0x80 byte alignment on payload size
+    if(cExpSize &amp; 0x7F)
+        return 0xC8007001;
+    // Unknown check, if I had to guess its checking if you requested too much memory or if the address is out of range
+    // Similar check is found in similar operations
+    if(((((pExpAddy + cExpSize) - 1) ^ pExpAddy) &amp; 0xFFFF0000) != 0)
+        return 0xC8007001;
+
+    // relocates exp data to an internal location, replaces pExpAddy with new address
+    HvpAquireSpinLock(0x200016918);
+    pExpAddy = HvpRelocatePhysicalToProtected(pExpAddy, cExpSize, 0x3A);
+
+    BYTE Hash1[0x14] = 0;
+    PBYTE AESKey = 0;
+    XECRYPT_RSA xRsa;
+    PEXP_HEADER pExpHeader = (PEXP_HEADER)pExpAddy;
+    DWORD MagicVersion = pExpHeader-&gt;Magic;
+
+    // Check what type of expansion we're dealing with
+    if(MagicVersion == 0x48585052) // &quot;HVPR&quot;
+    {
+        if(pExpHeader-&gt;Flags &amp; 3) //bits 1 and 2 in flags must be cleared for this type
+            return 0xC8007003;
+        xRsa = *(XECRYPT_RSA*)0x0000000200016280; // public RSA key
+        AESKey = (PBYTE)0x0000000200016270; // 1BL Key
+        XeCryptRotSumSha(pExpAddy, 0x30, 0, 0, Hash1, 0x14); // hash the header minus the sig
+    }
+    else if(MagicVersion == 0x48585043) // &quot;HVPC&quot;
+    {
+        // RSA Key check? Data its checking is null on RGH and XDK. Possible variable key?
+        #ifdef DEVKIT
+        xRsa = *(XECRYPT_RSA*)(*(QWORD*)0x0000000200016A00)+0x200;
+        #else
+        xRsa = *(XECRYPT_RSA*)(*(QWORD*)0x0000000200016950)+0x200;
+        #endif
+        if(xRsa.cqw != 0x20)
+        return 0xC8007002;
+        if((pExpHeader-&gt;Flags &amp; 3) != 3) // flags 1 and 2 must be set for this type
+        return 0xC8007003;
+        #ifdef DEVKIT
+        if(!(pExpHeader-&gt;Flags &amp; 2)) // if bit 2 is cleared, data is not encrypted
+        AESKey = 0; // data is decrypted, do not decrypt
+        else
+        #endif
+        AESKey = (PBYTE)0x20; // CPU Key
+        XeCryptHmacSha(0x20, 0x10, pExpAddy, 0x30, 0, 0, 0, 0, Hash1, 0x14);
+    }
+    else
+        return 0xC8007002; // invalid expansion type
+
+    // check if the header has been tampered with
+    if(!XeCryptBnQwBeSigVerify(pExpHeader-&gt;Sig, Hash1, (PBYTE)0x0000000200016664, xRsa))
+        return 0xC8007003;
+    if(pExpHeader-&gt;Size &gt; cExpSize) // size in header must be &lt;= size requested
+        return 0xC8007003;
+    if(AESKey != 0) // check if the key has been set. if not, skip decryption
+    {
+        XECRYPT_AES_STATE aes;
+        XeCryptAesKey(&amp;aes, AESKey);
+        XeCryptAesCbc(&amp;aes, pExpAddy+0x130, (pExpHeader-&gt;Size)-0x130, pExpAddy+0x130, &amp;(pExpHeader-&gt;AESFeed), 0);
+    }
+
+    // check if the expansion has been tampered with
+    XeCryptSha(pExpAddy+0x130, (pExpHeader-&gt;Size)-0x130, 0, 0, 0, 0, Hash1, 0x14);
+    if(XeCryptMemDiff(pExpHeader-&gt;ShaHash, Hash1, 0x14))
+        return 0xC8007003;
+
+    // go to the install function
+    QWORD ret = InstallExpansion(pExpAddy);
+
+    HvpZeroCacheLines(pExpAddy, cExpSize &gt;&gt; 7);
+    HvpRelocateProtectedToPhysical(pExpAddy, cExpSize, 0x3A);
+    HvpReleaseSpinLock(0x200016918);
+
+    return ret;
+}
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

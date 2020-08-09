@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Hypervisor (old notes) - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#hypervisor-old-notes" class="nav-link">Hypervisor (old notes)</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#syscalls" class="nav-link">Syscalls</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="hypervisor-old-notes">Hypervisor (old notes)</h1>
+<p>no booting details known changes between beta hardware and final: alpha
+hardware = macintosh beta = ? looks like retail, but no encryption
+second beta =! retail</p>
+<p>tried to dump RAM could only dump virtual memory ram is at 8000_0000
+southbridge: pci config space, mapped to VM, accessible by user apps
+memory at bottom looks random/encrypted, might be hypervisor 256 KB</p>
+<p>8040_0000 xbox kernel starts, MZ header</p>
+<p>read memory using debug interface: everything is in plaintext, you can
+read kernel + app (dashboard etc.), i.e. virtual memory is not encrypted</p>
+<p>kernel interesting to disassemble communication with hypervisor using
+syscalls</p>
+<p>hypervisor does interrupts/exceptions</p>
+<h2 id="syscalls">Syscalls</h2>
+<pre><code>final:
+
+SC 00: GetVersionCode (e.g. r3=072F8002)
+
+SC 01: KeStartupProcessors
+
+SC 02: unknown KiQuiesce
+
+SC 03: KeFlushEntireTb
+
+SC 04: called in FlushMultipleTb
+
+SC 05: ??
+
+SC 06: KeGetSpecialPurposeRegister (r3=0x3F5)
+
+SC 07: KeSetSpecialPurposeRegister
+
+SC 08: KeGetSocRegister(r3=???)/KeGetPWMRegister(r3=60000)/
+KeGetPRVRegister(r3=61000)
+
+SC 09: KeSetSocRegister
+
+SC 0A: KeStartupProcessors
+
+SC 0B: called in ReserveKernelPtes
+
+SC 0C: called from MmAllocatePhysicalMemoryEx
+
+SC 0D: setAD16
+
+SC 0E: KeEnablePPUPerformanceMonitor
+
+SC 0F: called from MmGetPhysicalAddress
+
+SC 10: called from MmDbgReleaseAddress
+
+SC 11: XexpLoadFile calls it, seems to get privkey
+
+r4 = phys addr (of header?) offset: +8
+
+r5 = region
+
+r6 = ?? offset: +4
+
+r7 = ?? size?
+
+SC 12: called from MmAllocateImageMemory
+
+SC 13: called from MmAllocateImageMemory
+
+SC 14: called in XexpLoadFile
+
+SC 15: called in XexpLoadFile
+
+SC 16: called in XexpCompleteImageLoad
+
+SC 17: called in XexpCompleteImageLoad
+
+SC 18: called in XexpLoadFile, XexpCompleteImageLoad
+
+SC 19: unload?
+
+SC 1A: unload?
+
+SC 1B: unload?
+
+SC 1c: called on XexpTitleTerminateNotification
+
+SC 1d: KeCreateUserMode
+
+SC 1e: KeDeleteUserMode
+
+SC 1f: Flush TLB
+
+SC 20: set power
+
+SC 21: shadow boot
+
+SC 22: Burn fuses
+
+SC 23: FSB interrupt related
+
+SC 24: KeLockL2
+
+SC 25:
+
+SC 26
+
+SC 27
+
+SC 28
+
+SC 29
+
+SC 2A
+
+SC 2B
+
+SC 2C: SataCdRomHvVerifyLBA
+
+SC 2D
+
+SC 2E: XeKeysInitialize (r3, r4 = address)
+
+SC 2F: XeKeysGetKeyProperties
+
+SC 30: XeKeysGetStatus
+
+SC 31: XeKeysGenerateRandomKey
+
+SC 32: XeKeysGetFactoryChallenge
+
+SC 33: XeKeysSetFactoryResponse
+
+SC 34: XeKeysSaveBootLoader
+
+SC 35: XeKeysSaveKeyVault
+
+SC 36: XeKeysSetKey
+
+SC 37: XeKeysGetKey
+
+SC 38: XeKeysGetDigest
+
+SC 39: XeKeysQwNeRsaPrvCrypt
+
+SC 3D: XeKeysDesCbc. r6: address, r5: context
+
+SC 3F: XeKeysSaveSystemUpdate
+
+SC 40:
+XeKeysExecute
+</code></pre>
+
+<h3 id="sc-22-burn-fuses">SC 22 (Burn fuses)</h3>
+<p>tested on 2 kernels</p>
+<p>first: SC "access fuses"</p>
+<p>second: "burn fuses"</p>
+<p>(rumour has it that this is used to make retail boxes out of debug
+boxes)</p>
+<p>memory management 0F/10: perhaps page table access code in hypervisor,
+all high level code in kernel</p>
+<p>you can't map memory as you like</p>
+<p>network adapter in the southbridge</p>
+<p>debug code dumps registers with names</p>
+<p>it is possible to dump physical memory using network adapter DMA
+accesses</p>
+<p>not perfect dump</p>
+<p>reading physical memory = encrypted</p>
+<p>data segments are not encrypted, but nearly all code segments</p>
+<p>older recovery cd (early 2005), worked on first beta developer kits,
+without security enabled:</p>
+<p>cd included kernel which included stuff that is encrypted in retail
+version</p>
+<p>includes hypervisor code! it is old, but...</p>
+<p>getspr: SC 6</p>
+<p>setspr: SC 7 -> possible to see implementation of basic syscall
+handling</p>
+<p>function in hypervisor to chain-run a new kernel from the old kernel</p>
+<p>hypervisor: sign with private key etc.</p>
+<p>hypervisor can only do physical memory</p>
+<p>hashing: load into register base address, length, destination of hash
+buffer, call syscode, hypervisor will hash -> attack: hash 1 byte,
+*itself*, -> hangs</p>
+<p>hypervisor lies at 0 in VM and physical mem</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

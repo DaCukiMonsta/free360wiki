@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Xbox System Software - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#bootloaders" class="nav-link">Bootloaders</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#hypervisor" class="nav-link">Hypervisor</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#kernel" class="nav-link">Kernel</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#xam" class="nav-link">XAM</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#file-systems" class="nav-link">File Systems</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#file-formats" class="nav-link">File Formats</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>The Xbox's <strong>Original Software</strong> is composed of many things, including
+the bootloaders, the kernel, the dashboard and more.</p>
+<h1 id="bootloaders"><a href="Bootloaders" title="wikilink">Bootloaders</a></h1>
+<p>The Xbox 360 system uses a series of
+<a href="bootloaders" title="wikilink">bootloaders</a> to load the hv/kernel and
+dashboard. These loaders are explained at <a href="Boot_Process" title="wikilink">Boot
+Process</a>.</p>
+<h1 id="hypervisor"><a href="Hypervisor" title="wikilink">Hypervisor</a></h1>
+<p>The <a href="Hypervisor" title="wikilink">Hypervisor</a> is the main operating system
+being run on the console. It looks after the kernel and stops things
+like buffer overflows from happening. It also manages a lot of the
+security aspects of the 360, including memory encryption and region
+protection. It has code to handle the XeKeys (keyvault + some static
+ones) and XEXs. The end-user of an Xbox would never have any knowledge
+of the hypervisor, it's only really interesting for hackers.</p>
+<h1 id="kernel"><a href="Kernel" title="wikilink">Kernel</a></h1>
+<p>The Xbox 360's <a href="Kernel" title="wikilink">Kernel</a> is responsible for low level
+hardware communication and more. This is the main part of the 360, the
+kernel is where all the user-based stuff happens. The drivers for
+accessing most of the hardware is located in the Kernel, along with
+certain drivers for other things used by the system (e.g. FATX (File
+Allocation Table for Xbox), STFS (Secure Transacted File System), SFCX
+(System Flash Controller for Xbox). This is the most interesting part of
+the console because of all the functions it performs.</p>
+<p>You can check your kernel version in "System -> Console Settings ->
+System Info". The line at the bottom contains your kernel version in the
+format K:2.0.<em>nnnnn</em>.0, where <em>nnnnn</em> is your kernel version.</p>
+<h1 id="xam">XAM</h1>
+<p>A lot of fun things are inside XAM. XAM handles gamer profiles and
+online interactivity, so as you can guess not a lot of information is
+made public about it. XeDevWiki hopes to change that. XAM handles such
+things as <a href="XDBF" title="wikilink">XDBF</a> (<strong>X</strong>box <strong>D</strong>ata<strong>b</strong>ase <strong>F</strong>ile)
+files (<a href="GPD" title="wikilink">GPD</a> (<strong>G</strong>amer <strong>P</strong>rogress
+<strong>D</strong>ata)/<a href="SPA" title="wikilink">SPA</a>) and <a href="PEC" title="wikilink">PEC</a> (<strong>P</strong>rofile
+<strong>E</strong>mbedded <strong>C</strong>ontent) files.</p>
+<h1 id="file-systems">File Systems</h1>
+<p>The Xbox 360 uses various File Systems for storing games, user content
+and more.</p>
+<p><strong><a href="FATX" title="wikilink">FATX</a></strong> (<strong>F</strong>ile
+<strong>A</strong>llocation <strong>T</strong>able for <strong>X</strong>box) is used as the storage
+filesystem on hard drives/memory units/USB devices/xlaunch.fdf files.</p>
+<p><strong><a href="GDFX" title="wikilink">GDFX</a></strong>/XSF (<strong>G</strong>ame
+<strong>D</strong>isc <strong>F</strong>ormat for <strong>X</strong>box) is the filesystem used on X360
+CD/DVD Media.</p>
+<p><strong><a href="STFS" title="wikilink">STFS</a></strong> (<strong>S</strong>ecure
+<strong>T</strong>ransacted <strong>F</strong>ile <strong>S</strong>ystem) is used for game saves,
+profiles, arcade games, downloadable content and more. STFS is also
+referred to as CON/LIVE/PIRS files, as they are all STFS files, just
+signed with a different header.</p>
+<p><strong><a href="SFCX" title="wikilink">(SFCX</a></strong> <strong>S</strong>ecure
+<strong>F</strong>ile <strong>C</strong>ache for <strong>X</strong>box) :is used for cache storage for games.</p>
+<p><strong><a href="NAND_File_System" title="wikilink">NAND File System</a></strong> is used to store the
+bootloaders, kernel, keyvault and other files on the
+<a href="NAND" title="wikilink">NAND</a>.</p>
+<h1 id="file-formats"><a href="File_Formats" title="wikilink">File Formats</a></h1>
+<p>The Xbox 360 also uses different <a href="File_Formats" title="wikilink">File Formats</a>
+for storage of data, as storage on the Xbox is limited, these files are
+usually binary. <a href="http://wiki.XeNTaX.com">XeNTaX.com</a> is a DataBase of
+hundreds of different file formats, which may be of help.</p>
+<p><strong><a href="PEC" title="wikilink">PEC</a></strong> (<strong>P</strong>rofile
+<strong>E</strong>mbedded <strong>C</strong>ontent) is used as another layer of security
+inside profiles.</p>
+<p><strong><a href="STFS" title="wikilink">STFS</a></strong> (<strong>S</strong>ecure
+<strong>T</strong>ransacted <strong>F</strong>ile <strong>S</strong>ystem) is used for secure storage of
+files on memory
+devices.</p>
+<p><strong><a href="XDBF" title="wikilink">XDBF</a></strong>/<strong><a href="GPD" title="wikilink">GPD</a></strong>/<strong><a href="SPA" title="wikilink">SPA</a></strong>
+(<strong>X</strong>box <strong>D</strong>ash<strong>b</strong>oard
+<strong>F</strong>ile/<strong>G</strong>amer <strong>P</strong>rofile <strong>D</strong>ata/<strong>S</strong>tatistics, <strong>P</strong>resence and
+<strong>A</strong>chievements) is used for profiles
+(achievements/settings/titles) and games (achievements/strings/ratings).</p>
+<p><strong><a href="XEX" title="wikilink">XEX</a></strong> (<strong>X</strong>enon
+<strong>Ex</strong>ecutable) is the executable format used by the Xbox 360.</p>
+<p><strong><a href="XMI" title="wikilink">XMI</a></strong>(<strong>X</strong>enon
+<strong>M</strong>usic <strong>I</strong>ndex) is used to index music on the Xbox.</p>
+<p><a href="Category_Xbox360_System_Software">Category:Xbox360 System Software</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

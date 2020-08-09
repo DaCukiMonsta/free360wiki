@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Ubuntu7.10 - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>Install Ubuntu 7.10 from the Gentoo LiveCD</p>
+<p>gnome Issue Resolved</p>
+<p><strong>WARNING: This script will WIPE your Xbox 360 internal harddisk
+(/dev/sda) and install Ubuntu 7.10</strong></p>
+<p><strong>If you have XeXmenu or another dashboard homebrew on that drive, you
+will loose it all: Follow these instructions only if you understand what
+you are doing.</strong></p>
+<p>I new boot disk that would allow the booting of a USB harddisk would
+ease the risk of ruining your 360 harddrive.</p>
+<p>ubuntu_gutsy.sh will create two partitions. 1 GB swap on sda0 and the
+rest of the disk as a root-filesystem on sda1. Run the script as root
+from the Gentoo LiveCD v2. You will need a DHCP-server on your network
+for this script.</p>
+<p>How do I run it?</p>
+<p>Click "Application > Accessories > Terminal" and type the following
+commands:</p>
+<p><code>sudo su</code>
+<code>wget</code><a href="http://file.libxenon.org/free60/linux/script/ubuntu_gutsy.sh">http://file.libxenon.org/free60/linux/script/ubuntu_gutsy.sh</a>
+<code>sh ./ubuntu_gutsy.sh</code></p>
+<p>Reboot the 360 when you are told. Boot with
+<a href="http://file.libxenon.org/latest_kern">http://file.libxenon.org/latest_kern</a>, supply correct "root=" parameter
+via kboot.conf (*kboot currently only supported via
+xell-reloaded-testing builds), boot the kernel/system and login as root.
+You will be asked to set new password. The rest of the installation will
+start automatically. The download is about 600Mb. After a while it will
+ask you to setup the screen resolution, select 1280x768 with the space
+bar. If the display is garbled use 1024x768.</p>
+<p>After it has finished installing and has rebooted into gnome open a new
+shell by typing Ctrl+Alt+F6 or Ctrl+Alt+F1 and type,</p>
+<p><code>sudo dpkg-reconfigure xserver-xorg</code></p>
+<p>Then follow the instructions below.</p>
+<p>1. Attempt to autodetect video hardware? > No</p>
+<p>2. X Server Driver: Xenonfb</p>
+<p>3. Generic Video Card > Enter</p>
+<p>4. Video card’s bus identifier: Press enter for default</p>
+<p>5. Amount of memory: Press enter for default</p>
+<p>6. Use kernel framebuffer device interface? > Yes</p>
+<p>7. Autodetect keyboard layout? > Yes</p>
+<p>8. Keyboard layout: us</p>
+<p>9. XKB rule set to use: xorg</p>
+<p>10. Keyboard model: choose your rule set based on the options</p>
+<p>11. Keyboard variant: leave blank if you’re in the U.S.</p>
+<p>12. Keyboard options: Leave as default</p>
+<p>13. Mouse Protocol: ImPS/2</p>
+<p>14. Emulate a 3 button mouse? > Your choice</p>
+<p>15. Xorg server modules: Default</p>
+<p>16. Write default Files section to configuration file? > Yes</p>
+<p>17. Attempt monitor detection? > Yes</p>
+<p>18. Use generic monitor if it doesn’t detect it.</p>
+<p>19. Video modes to be used by the X server: 1280x768 (1024x768 if
+garbled)</p>
+<p>20. Method for selecting the monitor characteristics: Medium</p>
+<p>21. Monitors best video mode: Choose what’s best for your monitor.</p>
+<p>22. Write monitor sync ranges to the configuration file? > Yes</p>
+<p>23. Desired default color depth in bits: 24.</p>
+<p>After that go back to gnome by typing Ctrl+Alt+F7.</p>
+<p>Reboot X by typing Ctrl+Alt+Backspace.</p>
+<p>(If Java is required, do not install the one in the default repository
+as it is broken, to attempt to install it
+<a href="http://ubuntuforums.org/showthread.php?t=1116368">http://ubuntuforums.org/showthread.php?t=1116368</a> , or simply install
+this
+<a href="https://web.archive.org/web/20110810200730/http://3dslice.net/downloads/PrimeGen/ibm-j2sdk1.6_1.6.0_powerpc.deb">http://3dslice.net/downloads/PrimeGen/ibm-j2sdk1.6_1.6.0_powerpc.deb</a>
+)</p>
+<p>ubuntu_gutsy.sh
+#!/bin/bash</p>
+<p><code># set the date to anything except 1/1/1970 since this causes issues</code>
+<code># time is now also set after first boot by .bashrc script below</code>
+<code>date -s 1/1/2009</code>
+<code># if /dev/sda is mounted then paritions get wiped by dd but sfdisk fails!</code>
+<code>swapoff /dev/sda1</code>
+<code>umount /mnt/ubuntu</code>
+<code># partition and mkfs hdd (all data is lost!)</code>
+<code>dd if=/dev/zero of=/dev/sda bs=512 count=1</code>
+<code>sfdisk /dev/sda &lt;&lt; EOF</code>
+<code>,124,S</code>
+<code>,,L</code>
+<code>EOF</code>
+<code>dd if=/dev/zero of=/dev/sda2 bs=512 count=1</code>
+<code>mkfs.ext3 /dev/sda2</code>
+<code>mkswap /dev/sda1</code>
+<code>sync; sync; sync</code>
+<code>swapon /dev/sda1</code>
+<code># setup paths</code>
+<code>mkdir /mnt/ubuntu</code>
+<code>mount /dev/sda2 /mnt/ubuntu</code>
+<code>cd /mnt/ubuntu</code>
+<code>mkdir /mnt/ubuntu/work</code>
+<code>cd /mnt/ubuntu/work</code>
+<code># download extract and run debootstrap</code>
+<code>wget</code><a href="ftp://old-releases.ubuntu.com/old-images/ubuntu/pool/main/d/debootstrap/debootstrap_1.0.3build1_all.deb">ftp://old-releases.ubuntu.com/old-images/ubuntu/pool/main/d/debootstrap/debootstrap_1.0.3build1_all.deb</a>
+<code>ar -xf debootstrap_1.0.3build1_all.deb</code>
+<code>cd /mnt/ubuntu</code>
+<code>zcat &lt; /mnt/ubuntu/work/data.tar.gz | tar xv</code>
+<code>export DEBOOTSTRAP_DIR=/mnt/ubuntu/usr/lib/debootstrap</code>
+<code>export PATH=$PATH:/mnt/ubuntu/usr/sbin</code>
+<code>debootstrap --arch powerpc gutsy /mnt/ubuntu</code><a href="ftp://old-releases.ubuntu.com/old-images/ubuntu/">ftp://old-releases.ubuntu.com/old-images/ubuntu/</a>
+<code># create needed files on hdd</code>
+<code>echo Falcon &gt; /mnt/ubuntu/etc/hostname</code>
+<code>cat &gt; /mnt/ubuntu/etc/fstab &lt;&lt; EOF</code>
+<code>/dev/sda2     /          ext3     defaults   0   0</code>
+<code>/dev/sda1     none    swap    sw           0   0</code>
+<code>proc            /proc    proc    defaults  0   0</code>
+<code>EOF</code>
+<code>cat &gt; /mnt/ubuntu/etc/network/interfaces &lt;&lt; EOF</code>
+<code>iface lo inet loopback</code>
+<code>auto lo</code>
+<code>auto eth0</code>
+<code>iface eth0 inet dhcp</code>
+<code>EOF</code>
+<code>cat &gt; /mnt/ubuntu/etc/apt/sources.list &lt;&lt; EOF</code>
+<code>deb</code><a href="ftp://old-releases.ubuntu.com/old-images/ubuntu/">ftp://old-releases.ubuntu.com/old-images/ubuntu/</a><code>gutsy main restricted universe multiverse</code>
+<code>EOF</code>
+<code>#Change root-pwd inside chroot</code>
+<code>chroot /mnt/ubuntu echo "root:xbox" | chroot /mnt/ubuntu /usr/sbin/chpasswd</code>
+<code>cp /mnt/ubuntu/root/.bashrc /mnt/ubuntu/root/.bashrc.orginal</code>
+<code># create .bashrc script on hdd</code>
+<code>cat &gt;&gt; /mnt/ubuntu/root/.bashrc &lt;&lt; EOF</code>
+<code>date -s 1/1/2009</code>
+<code>passwd</code>
+<code>mkdir /lib/modules/2.6.24.3</code>
+<code>touch /lib/modules/2.6.24.3/modules.dep</code>
+<code>apt-get update</code>
+<code>apt-get install ntp wget -y --force-yes</code>
+<code>apt-get install ubuntu-desktop -y</code>
+<code>echo "AVAHI_DAEMON_START=0" &gt; /etc/default/avahi-daemon</code>
+<code>/etc/init.d/networking restart</code>
+<code>cd /usr/lib/xorg/modules/drivers/</code>
+<code>wget -O xenosfb_drv.so</code><a href="http://file.libxenon.org/free60/linux/xenosfb/xenosfb_drv.so_gutsy">http://file.libxenon.org/free60/linux/xenosfb/xenosfb_drv.so_gutsy</a>
+<code>cd /etc/X11/</code>
+<code>wget</code><a href="http://file.libxenon.org/free60/linux/xenosfb/xorg.conf">http://file.libxenon.org/free60/linux/xenosfb/xorg.conf</a>
+<code>mv ubuntu.conf xorg.conf</code>
+<code>cd /usr/lib/xorg/modules/linux/</code>
+<code>mv libfbdevhw.so libfbdevhw.so.bk</code>
+<code>wget -O libfbdevhw.so</code><a href="http://file.libxenon.org/free60/linux/xenosfb/libfbdevhw.so_gutsy">http://file.libxenon.org/free60/linux/xenosfb/libfbdevhw.so_gutsy</a>
+<code>rm -r -f /work/</code>
+<code>echo "" &gt; /etc/gdm/gdm.conf-custom</code>
+<code>sed -i 's/AllowRoot=false/AllowRoot=true/' /etc/gdm/gdm.conf</code>
+<code>rm /root/.bashrc</code>
+<code>mv /root/.bashrc.orginal /root/.bashrc</code>
+<code>/etc/init.d/gdm start</code>
+<code>EOF</code>
+<code># done</code>
+<code>echo "Base installation completed."</code>
+<code>echo "To finish the installation: Reboot and load the kernel with correct root= params."</code>
+<code>echo "The install  may take up to two hours, depending on your internet connection"</code></p>
+<p><a href="Category_Xbox360_Linux">Category:Xbox360_Linux</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

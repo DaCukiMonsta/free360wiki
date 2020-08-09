@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Memory unit - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#memory-unit" class="nav-link">Memory unit</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#general-information" class="nav-link">General Information</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#known-facts" class="nav-link">Known Facts</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#inside-the-memory-unit" class="nav-link">Inside the memory unit</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#fatx-partition-locations" class="nav-link">FATX Partition Locations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#speculation" class="nav-link">Speculation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="memory-unit">Memory unit</h1>
+<h2 id="general-information">General Information</h2>
+<ul>
+<li>Memory Units (64 MB) require no setup or configuration. (Plug &amp;
+  Play)</li>
+<li>Xbox 360 accepts two Memory Units.</li>
+<li>
+<p>Each unit contains three IC's:</p>
+</li>
+<li>
+<p>Custom Microsoft ASIC (marked as X805867-002)</p>
+</li>
+<li>Samsung NAND flash memory (IC model depends on memory size i.e.
+    K9F1208U)</li>
+<li>Perhaps an IC EEPROM memory (marked as X803122)</li>
+</ul>
+<h2 id="known-facts">Known Facts</h2>
+<ul>
+<li>The Memory card is required in absence of hard drive to play on Xbox
+  Live and to save game progress.</li>
+<li>The memory cards are USB devices, albeit with custom connectors and
+  with 3.3V power (not 5V).</li>
+</ul>
+<h2 id="inside-the-memory-unit">Inside the memory unit</h2>
+<h3 id="flash-contents">Flash Contents</h3>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Length (bytes)</th>
+<th>Contains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x00000</td>
+<td>16</td>
+<td>Text String "DUMBO FIL format"</td>
+</tr>
+<tr>
+<td>0x0020B</td>
+<td>5</td>
+<td>5 byte value</td>
+</tr>
+<tr>
+<td>0x04200</td>
+<td>32</td>
+<td>MS text string</td>
+</tr>
+<tr>
+<td>0x04220</td>
+<td>15</td>
+<td>Ascii serial nr of MU</td>
+</tr>
+<tr>
+<td>0x0440B</td>
+<td>5</td>
+<td>5 byte value</td>
+</tr>
+<tr>
+<td>0x10800</td>
+<td>~</td>
+<td>Data start</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fatx-partition-locations">FATX Partition Locations</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address</td>
+<td>Type</td>
+</tr>
+<tr>
+<td>0x00</td>
+<td>Partition 1</td>
+</tr>
+<tr>
+<td>0x7ff000</td>
+<td>Partition 2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="speculation">Speculation</h2>
+<p>The connections of the small 8-pin IC:</p>
+<table>
+<thead>
+<tr>
+<th>Pin#</th>
+<th>Description</th>
+<th>Characteristic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>GND</td>
+<td>A0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>NC</td>
+<td>A1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>NC</td>
+<td>A2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>NC</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>5</td>
+<td>to pin 22 of ASIC</td>
+<td>SDA</td>
+</tr>
+<tr>
+<td>6</td>
+<td>to pins 20 and 21 of ASIC</td>
+<td>SCL</td>
+</tr>
+<tr>
+<td>7</td>
+<td>to pin 3 of ASIC</td>
+<td>WP</td>
+</tr>
+<tr>
+<td>8</td>
+<td>VCC</td>
+<td>VCC (3.3V)</td>
+</tr>
+</tbody>
+</table>
+<p>At the bottom side of this chip is written:</p>
+<pre><code>PHILK2B
+EL526
+901IA2
+</code></pre>
+
+<p>Most plausible theory is that the IC is an IC EEPROM memory.
+I've added in brackets possible 24CXXX family pin names. GND could be A0
+because in most cases adress lines (A0-A2) are connected to ground.</p>
+<p>Other theory (less plausible) is that it might be a NXP (Philips)
+<a href="http://www.nxp.com/pip/P89LPC901_902_903-05.html">P89LPC901FD microcontroller</a> with
+its die upside down?
+archive.org mirror: <a href="https://web.archive.org/web/20070629141142/https://www.nxp.com/pip/P89LPC901_902_903-05.html">here</a></p>
+<p>When supplying 3.3 volts to the Memory Unit:
+Measurements at pins 5, 6, and 7 show that there is a clock signal of
+5Mhz present on pin 7 (in burst of 16 cycles).
+Every 16 cycles, one bit is transferred on pin 6.
+3ms after powerup data communication ends.
+Note: This looks like SPI, pin 7 - SCK, Pin 6 - /SS, Pin 5 - MODI.</p>
+<p>But <a href="http://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus">SPI</a>
+needs four wires. It's more like I<sup>2</sup>C which needs only two
+lines (SDA, SCL) and optionally WP (Write Protect).</p>
+<p><a href="../Category_Xbox360_Hardware">Category:Xbox360_Hardware</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Understanding the Xbox 360's Fusesets - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#understanding-the-xbox-360s-fusesets" class="nav-link">Understanding the Xbox 360's Fusesets</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#what-they-look-like" class="nav-link">What They Look Like</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#their-real-binary-values" class="nav-link">Their Real Binary Values</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#fusesets-00-and-01" class="nav-link">Fusesets 00 and 01</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#fuseset-02" class="nav-link">Fuseset 02</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#fusesets-03-06" class="nav-link">Fusesets 03-06</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#fusesets-07-11" class="nav-link">Fusesets 07-11</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#dumping-the-fusesets" class="nav-link">Dumping the fusesets</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="understanding-the-xbox-360s-fusesets">Understanding the Xbox 360's Fusesets</h1>
+<p>The Xbox 360's Xenon CPU has 768 bits of eFUSE, a technology invented by
+IBM, and implemented in some of it's processors. eFUSEs are hardware
+fuses on the CPU, and can be "blown" to a binary value (1 being blown,
+and 0 being un-blown) in the Xbox 360, there are 768 fuses, that make up
+the fusesets. Though each fuseset can be blown individually, they are
+blown in groups of 8 to make a hexadecimal value for the CPU key, and
+fuseline 00, instead of a binary value, which is what XeLL will actually
+display. Technically, there are only 192 viewable fuses.</p>
+<h2 id="what-they-look-like">What They Look Like</h2>
+<p><img alt="Xell_fusesets.jpg" src="../images/Xell_fusesets.jpg" />
+<img alt="Gentoo_fuses.jpg" src="../images/Gentoo_fuses.jpg" /></p>
+<p><strong>Once you aquire the fusesets (From either XeLL or dump32 in Linux)
+they look like this:</strong></p>
+<pre><code>fuseset 00: C0FFFFFFFFFFFFFF
+fuseset 01: 0F0F0F0F0F0F0FF0
+fuseset 02: 0F00000000000000
+fuseset 03: 9FB0174015744DAF
+fuseset 04: 9FB0174015744DAF
+fuseset 05: D569BAD6958DAE9D
+fuseset 06: D569BAD6958DAE9D
+fuseset 07: FFFF000000000000
+fuseset 08: 0000000000000000
+fuseset 09: 0000000000000000
+fuseset 10: 0000000000000000
+fuseset 11: 0000000000000000
+</code></pre>
+
+<h2 id="their-real-binary-values">Their Real Binary Values</h2>
+<p><strong>If you were actually reading the fuses, they would look like this (0
+being an un-burned fuse, and 1 being a burned fuse) There should be 768
+ones and zeros here, hence the "768 Bits" of eFUSE. This doesn't mean
+anything, but is just to show how the eFUSE's are actually set up.</strong></p>
+<pre><code>Fuseset 00: 1100011111111111111
+Fuseset 01: 0101010101010110
+Fuseset 02: 0100000000000000
+Fuseset 03: 1001111110110000000101110100000000010101011101000101000000000000
+Fuseset 04: 1001111110110000000101110100000000010101011101000101000000000000
+Fuseset 05: 1101010101101001101110101101011010010101100011011011000000000000
+Fuseset 06: 1101010101101001101110101101011010010101100011011011000000000000
+Fuseset 07: 1111000000000000
+Fuseset 08: 0000000000000000
+Fuseset 09: 0000000000000000
+Fuseset 10: 0000000000000000
+Fuseset 11: 0000000000000000
+</code></pre>
+
+<h2 id="fusesets-00-and-01">Fusesets 00 and 01</h2>
+<p>These are burned at the factory, after the console is manufactured, they
+show whether the console is a devkit or not. They also disable CPU JTAG
+after the console's flash is programed.</p>
+<pre><code>Retail fuseset 01: 0F0F0F0F0F0F0FF0
+Devkit fuseset 01: 0F0F0F0F0F0F0F0F
+</code></pre>
+
+<h2 id="fuseset-02">Fuseset 02</h2>
+<p>This is the lockdown counter for the 2BL/CB (The 2nd Bootloader, stored
+in NAND Flash) One of these are burned everytime the console updates
+it's bootloader (Which isn't very often) this is the reason that there
+is no way to recover a JTAG that has been updated to 2.0.8***.0, even
+is you have the CPU key, (2BL is encrypted with the CPU/1BL key, but is
+signed with Microsoft's private key so you can't change the lockdown
+counter in the NAND. The bootloader will fail signature checks, and
+panic)</p>
+<h2 id="fusesets-03-06">Fusesets 03-06</h2>
+<p>These make up the CPU key. These start out as all zero's, and are burned
+presumably at random when the console boots for the first time, they are
+used to encrypt the keyvault, and the bootloader sections. The CPU key
+is unique to each console, and is sometimes refered to as the "per-box
+key" To find the CPU key, add fusesets 03, and 05, <strong>OR</strong> 04 and 06. For
+example, this console's CPU key would be
+<code>9FB0174015744DAFD569BAD6958DAE9D</code>.</p>
+<h2 id="fusesets-07-11">Fusesets 07-11</h2>
+<p>These make up the console's "Lockdown Counter." They are blown after
+each dashboard update starting with the update from 4532/4548 to 4598.
+They prevent a previous version of the dashboard from being run on an
+updated console. There are enough eFUSEs in this section for Microsoft
+to update the console roughly 80 times. The lockdown counter of this
+console is at FFFF00000..., this means that it has received 4 dashboard
+updates since 2.0.4548.0 ran on it. Microsoft originally intended to
+only blow an eFUSE when a system update patched a critical vulnerability
+(Like the Hypervisor vulnerability in 4532 and 4548) but has now decided
+to blow an eFUSE with every update since the update to 4598. In the
+NAND's 6BL(CF) section, there is another lockdown counter that
+should(Under normal circumstances) match the fuselines on the CPU. If it
+doesn't match, the console will panic on boot, and will show a RRoD.
+Now, here's the good part! If we know the CPU key of the console, we
+can decrypt the 6BL, and change the lockdown counter in the NAND to
+match the one on the console, and therefore run an older dashboard.
+Since the 6BL isn't signed with Microsoft's private key, we can edit it
+as we please, so long as we have our CPU key.</p>
+<h1 id="dumping-the-fusesets">Dumping the fusesets</h1>
+<p>This is how the bootloaders do it</p>
+<pre><code class="c">QWORD getFuseline(DWORD fuse)
+{
+    if ((fuse * 0x40) &lt; 0x300)
+        return *(QWORD*)0x8000020000020000ULL + ((fuse * 0x40) &lt;&lt; 3);
+    return 0;
+}
+
+void DumpFuses()
+{
+    QWORD fuses[12] = { 0 };
+
+    printf(&quot;Fuses:\n&quot;);
+    for (int i = 0; i &lt; 12; i++)
+    {
+        fuses[i] = getFuseline(i);
+        printf(&quot;Fuse [%02d]: %016llX\n&quot;, i, fuses[i]);
+    }
+}
+</code></pre>
+
+<p><a href="../Category_Xbox360_System_Software">Category:Xbox360 System Software</a>
+<a href="../Category_Xbox360_Hardware">Category:Xbox360_Hardware</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

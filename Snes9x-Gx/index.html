@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Snes9x Gx - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h3 id="general-info">General Info</h3>
+<h3 id="nfo">NFO</h3>
+<pre><code>*******************************************************************************
+   ____  _   _ _____ ____  _____  __   ______  __ __  __
+  / ___|| \ | | ____/ ___|/ _ \ \/ /  / ___\ \/ / \ \/ /___ _ __   ___  _ __
+  ___ \|  \| |  _| ___ \ (_) \  /  | |  _ \  /   \  // _ \ '_ \ / _ \| '_ \
+   ___) | |\  | |___ ___) __, /  \  | |_| |/  \   /  \  __/ | | | (_) | | | |
+  |____/|_| _|_____|____/  /_/_/_\  ____/_/_\ /_/____|_| |_|___/|_| |_|
+
+*******************************************************************************
+
+-------------------------------------------------------------------------------
+                              General Information
+-------------------------------------------------------------------------------
+Filename.............: Snes9x-Gx-Beta001
+Type.................: Emulator
+Platform.............: Xbox 360
+Release Date.........: 2009/09/08
+By...................: TMBINC
+Webpage..............: www.free60.org
+
+-------------------------------------------------------------------------------
+                                 Change Log / Fixes
+-------------------------------------------------------------------------------
+Filename: Snes9x-Gx-Beta001
+ - Fixed Ticking Sound.
+ - Swapped B &amp; A buttons around.
+
+Filename: Snes9x-Gx-Beta
+ - Sound Support Added.
+ - Wireless Pad Support Added.
+ - Full CPU Core Support Added.
+
+Filename: Snes9x-Gx-Alpha
+ - The emu looks for a static rom filename - SNES9X.SMC
+ - Some USB storage devices might not work.
+ - Only the composite, component and VGA AVPACK are supported.
+ - PAL60 is used instead of NTSC on composite.
+ - VGA is hardcoded to 1024x768.
+ - No VSYNC.
+ - Only first wired controller is supported.
+ - CPU is running at 800Mhz, only one core/thread is used.
+ - No sound.
+-------------------------------------------------------------------------------
+                                 Known Bugs / To Do List
+-------------------------------------------------------------------------------
+ - Screen Tearing
+ - Improve Wireless Pad Support (Might be abit laggy compared to wired)
+ - No Sram Support Yet
+ - Graphical Interface / Menu
+ - Lots More To List
+
+-------------------------------------------------------------------------------
+                                 Release Notes
+-------------------------------------------------------------------------------
+This is the first SNES emulator to run natively on the xbox 360 using the new
+Xell hack released by the guys over at www.free60.org
+
+Build based off the sources from http://code.google.com/p/snes9x-gx/ &amp; compiled
+using LibXenon found at https://github.com/LibxenonProject
+
+All Code used to create LibXenon &amp; to compile this port, is opensourse &amp;
+contains no Microsoft XDK code making it legal to distribute the .ELF files.
+
+Currently only running on the xenon xell hack. Support for other chipsets is
+in the works!
+
+-------------------------------------------------------------------------------
+                                 Install Notes
+-------------------------------------------------------------------------------
+Copy Xenon.elf to the root of your mem stick along with any rom which has been
+renamed as SNES9X.SMC
+
+Insert mem stick into xbox 360 &amp; power on.
+
+THIS ONLY WORKS WITH HACKED 360 RUNNING XELL
+
+-------------------------------------------------------------------------------
+                                 License
+-------------------------------------------------------------------------------
+Snes9x homepage: http://www.snes9x.com
+Snes9x GX homepage: http://code.google.com/p/snes9x-gx/
+
+Permission to use, copy, modify and/or distribute Snes9x in both binary
+and source form, for non-commercial purposes, is hereby granted without
+fee, providing that this license information and copyright notice appear
+with all copies and any derived work.
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event shall the authors be held liable for any damages
+arising from the use of this software or it's derivatives.
+
+Snes9x is freeware for PERSONAL USE only. Commercial users should
+seek permission of the copyright holders first. Commercial use includes,
+but is not limited to, charging money for Snes9x or software derived from
+Snes9x, including Snes9x or derivatives in commercial game bundles, and/or
+using Snes9x as a promotion for your commercial product.
+
+The copyright holders request that bug fixes and improvements to the code
+should be forwarded to them so everyone can benefit from the modifications
+in future versions.
+
+Super NES and Super Nintendo Entertainment System are trademarks of
+Nintendo Co., Limited and its subsidiary companies.
+
+-------------------------------------------------------------------------------
+                                 Greetz &amp; Shoutouts
+-------------------------------------------------------------------------------
+Thanks to TMBINC - XBH - Free60 - And the rest of the crew!!!!
+NFO Created By HoRnEyDvL 2009
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+</code></pre>
+<p><a href="Category_Xbox360_Homebrew_Software">Category:Xbox360_Homebrew_Software</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

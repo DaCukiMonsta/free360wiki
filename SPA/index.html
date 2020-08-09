@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>SPA - Free60 Wiki archive</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Free60 Wiki archive</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../%21TODO/" class="nav-link">ToDo</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#record-table" class="nav-link">Record Table</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#record-namespaces" class="nav-link">Record Namespaces</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#record-structures" class="nav-link">Record Structures</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#metadata" class="nav-link">Metadata</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#images" class="nav-link">Images</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#string-tables" class="nav-link">String Tables</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><strong>SPA</strong> files are contained inside <a href="XEX" title="wikilink">XEX</a> files or within
+Updates or DLC. They are just a <a href="XDBF" title="wikilink">XDBF</a> file, they are
+used by the dashboard for <a href="GPD" title="wikilink">GPD</a> creation and <a href="Xbox_LIVE" title="wikilink">Xbox
+LIVE</a> information.</p>
+<h1 id="record-table">Record Table</h1>
+<h2 id="record-namespaces">Record Namespaces</h2>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Metadata</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Images</td>
+</tr>
+<tr>
+<td>3</td>
+<td>String Tables</td>
+</tr>
+</tbody>
+</table>
+<h1 id="record-structures">Record Structures</h1>
+<h2 id="metadata">Metadata</h2>
+<p>Each record here is set out differently depending on there magic.</p>
+<h3 id="xach">XACH</h3>
+<p>This is just a table of
+Achievements.</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XACH)</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Structure Version</td>
+</tr>
+<tr>
+<td>0x8</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>0xC</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Achievement Count</td>
+</tr>
+<tr>
+<td>0xE</td>
+<td><strong>Achievement Count</strong> * 36 (0x24)</td>
+<td>achievement structure (see below)</td>
+<td>Achievements</td>
+</tr>
+</tbody>
+</table>
+<h4 id="achievement-structure">Achievement Structure</h4>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x0</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Achievement ID</td>
+</tr>
+<tr>
+<td>0x2</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Title String ID</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Unlocked Description ID</td>
+</tr>
+<tr>
+<td>0x6</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Locked Description ID</td>
+</tr>
+<tr>
+<td>0x8</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Image ID</td>
+</tr>
+<tr>
+<td>0xC</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Gamerscore</td>
+</tr>
+<tr>
+<td>0xE</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Unused</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Flags</td>
+</tr>
+<tr>
+<td>0x14</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Unused</td>
+</tr>
+<tr>
+<td>0x18</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Unused</td>
+</tr>
+<tr>
+<td>0x1C</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Unused</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Unused</td>
+</tr>
+</tbody>
+</table>
+<h3 id="xcxt">XCXT</h3>
+<p>TODO: what this
+stores</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XCXT)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Record Count</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>Record Count</strong> * 16</td>
+<td>Record structure (see below)</td>
+<td>Records</td>
+</tr>
+</tbody>
+</table>
+<h4 id="record-structure">Record Structure</h4>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Unknown</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: Unknown</p>
+<h3 id="xitb">XITB</h3>
+<p>This record just stores the ImagePath +
+ID's.</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XITB)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Image Count</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>Image Count</strong> * 16</td>
+<td>Image structure (see below)</td>
+<td>Images</td>
+</tr>
+</tbody>
+</table>
+<h4 id="image-structure">Image Structure</h4>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>UInt32</td>
+<td>ImageID</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Name Length</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Name Length</td>
+<td>String</td>
+<td>Image Path</td>
+</tr>
+</tbody>
+</table>
+<h3 id="xmat">XMAT</h3>
+<p>TODO: What this
+stores</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XMAT)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Structure Size</strong> - 8</td>
+<td>Byte[]</td>
+<td>Unknown</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: Unknown</p>
+<h3 id="xpbm">XPBM</h3>
+<p>TODO: What this
+stores</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XPBM)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Structure Size</strong> - 8</td>
+<td>Byte[]</td>
+<td>Unknown</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: Unknown</p>
+<h3 id="xprp">XPRP</h3>
+<p>TODO: what this
+stores</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XPRP)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Record Count</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>Record Count</strong> * 8</td>
+<td>Record structure (see below)</td>
+<td>Records</td>
+</tr>
+</tbody>
+</table>
+<h4 id="record-structure_1">Record Structure</h4>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>8</td>
+<td>Byte[]</td>
+<td>Unknown</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: Unknown, (2 int32's?)</p>
+<h3 id="xrpt">XRPT</h3>
+<p>This record just stores a series of XPMB files.</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XRPT)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size</td>
+</tr>
+<tr>
+<td>12</td>
+<td></td>
+<td><strong>XPMB</strong></td>
+<td>XPBM</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>UInt16</td>
+<td>XPBM Count</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>XPBM[XPBM Count]</td>
+<td>Sub XPBMs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="xsrc">XSRC</h3>
+<p>This file is something todo with xlast, (a source
+file?)</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XSRC)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>UInt32</td>
+<td>NameLength</td>
+</tr>
+<tr>
+<td>16</td>
+<td>NameLength</td>
+<td>String</td>
+<td>(original?)filename</td>
+</tr>
+<tr>
+<td>16 + NameLength</td>
+<td>Structure Size - 8</td>
+<td>Byte[]</td>
+<td>Unknown(compressed?)</td>
+</tr>
+</tbody>
+</table>
+<p>TODO:Unknown</p>
+<h3 id="xstc">XSTC</h3>
+<p>TODO: What this stores</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XSTC)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Unknown</td>
+</tr>
+</tbody>
+</table>
+<p>TODO:
+Unknown</p>
+<h3 id="xthd">XTHD</h3>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>unsigned int</td>
+<td>Magic (XTHD)</td>
+</tr>
+<tr>
+<td>0x4</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Structure Version</td>
+</tr>
+<tr>
+<td>0x8</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Structure Size</td>
+</tr>
+<tr>
+<td>0xC</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Title ID</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Title Type (0 = system, 1 = full, 2 = demo, 3 = download)</td>
+</tr>
+<tr>
+<td>0x14</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Project Version Major</td>
+</tr>
+<tr>
+<td>0x16</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Project Version Minor</td>
+</tr>
+<tr>
+<td>0x18</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Project Version Build</td>
+</tr>
+<tr>
+<td>0x1A</td>
+<td>0x2</td>
+<td>unsigned short</td>
+<td>Project Version Revision</td>
+</tr>
+<tr>
+<td>0x1C</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Unused</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Unused</td>
+</tr>
+<tr>
+<td>0x24</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Unused</td>
+</tr>
+<tr>
+<td>0x28</td>
+<td>0x4</td>
+<td>unsigned int</td>
+<td>Unused</td>
+</tr>
+</tbody>
+</table>
+<p>Is StructureSize null for anyone else? only in this record.</p>
+<h3 id="xvc2">XVC2</h3>
+<p>This record just stores a series of XPBM files, and (TODO:Unknown).</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XVC2)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>2</td>
+<td>UInt16</td>
+<td>XPBM Count</td>
+</tr>
+<tr>
+<td>14</td>
+<td>204</td>
+<td>Byte[]</td>
+<td>Unknown</td>
+</tr>
+<tr>
+<td>208</td>
+<td></td>
+<td>XPBM[]</td>
+<td>XPBM's</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: Unknown</p>
+<h2 id="images">Images</h2>
+<p>Image entries are composed of a PNG image.</p>
+<h2 id="string-tables">String Tables</h2>
+<h3 id="xstr">XSTR</h3>
+<p>All these records are set out the same however some have a unknown
+byte[] after the
+string.</p>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>string</td>
+<td>Magic (XSTR)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>UInt32</td>
+<td>Structure Size (- Magic)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>UInt16</td>
+<td>String Count</td>
+</tr>
+<tr>
+<td>16</td>
+<td></td>
+<td>String structure (see below)</td>
+<td>Strings</td>
+</tr>
+</tbody>
+</table>
+<h4 id="string-structure">String Structure</h4>
+<table>
+<thead>
+<tr>
+<th>Offset</th>
+<th>Length</th>
+<th>Type</th>
+<th>Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>2</td>
+<td>UInt16</td>
+<td>String ID</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>UInt16</td>
+<td>String Length</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>String Length</strong></td>
+<td>String</td>
+<td>String</td>
+</tr>
+</tbody>
+</table>
+<p><a href="Category_Xbox360_System_Software">Category:Xbox360_System_Software</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
